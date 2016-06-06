@@ -1,5 +1,7 @@
 import serial
 
+# http://playground.arduino.cc/Interfacing/Python
+
 def loop():
     ser = serial.Serial('/dev/tty.usbserial', 9600)
     while True:
