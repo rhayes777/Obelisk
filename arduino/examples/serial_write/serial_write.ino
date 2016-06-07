@@ -1,9 +1,4 @@
-void setup() {
-  // put your setup code here, to run once:
 
-}
-
-void loop() {
   /*
   Serial Call and Response
  Language: Wiring/Arduino
@@ -75,4 +70,4 @@ void establishContact() {
     delay(300);
   }
 }
-}
+
