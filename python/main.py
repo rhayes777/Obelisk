@@ -5,6 +5,7 @@ import pyaudio
 import sys
 import wave
 from threading import Thread
+from time import sleep
 
 # http://playground.arduino.cc/Interfacing/Python
 
@@ -19,6 +20,8 @@ actions = [([0, 0, 0], "Roland-GR-1-12-String-Guitar-C4.wav"),
 
 # Instantiate PyAudio.
 p = pyaudio.PyAudio()
+should_play = False
+is_sample_finished = False
 
 
 def loop():
@@ -30,7 +33,7 @@ def loop():
         
         for action in actions:
             if arr == action[0]:
-                play_wav_on_new_thread(action[1])
+                loop_wav_on_new_thread(action[1])
                 
 
 #                 play_wav(action[1])
@@ -38,8 +41,8 @@ def loop():
 CHUNK_SIZE = 1024
 
 
-def play_wav(wav_filename, chunk_size=CHUNK_SIZE):
-
+def loop_wav(wav_filename, chunk_size=CHUNK_SIZE):
+    global is_sample_finished
     try:
         print 'Trying to play file ' + wav_filename
         wf = wave.open(wav_filename, 'rb')
@@ -58,10 +61,18 @@ def play_wav(wav_filename, chunk_size=CHUNK_SIZE):
         rate=wf.getframerate(),
                     output=True)
 
-    data = wf.readframes(chunk_size)
-    while len(data) > 0:
-        stream.write(data)
-        data = wf.readframes(chunk_size)
+    is_sample_finished = False
+
+    # PLAYBACK LOOP
+    data = wf.readframes(CHUNK_SIZE)
+    while should_play :
+      stream.write(data)
+      data = wf.readframes(CHUNK_SIZE)
+      if data == '' : # If file is over then rewind.
+        wf.rewind()
+        data = wf.readframes(CHUNK_SIZE)
+
+    is_sample_finished = True
 
     # Stop stream.
     stream.stop_stream()
@@ -71,8 +82,14 @@ def play_wav(wav_filename, chunk_size=CHUNK_SIZE):
     # p.terminate()
 
 
-def play_wav_on_new_thread(name):
-    t = Thread(target=play_wav, args=(name,))
+def loop_wav_on_new_thread(name):
+    global should_play
+    should_play = False
+    while is_sample_finished:
+        sleep(0.01)
+    should_play = True
+
+    t = Thread(target=loop_wav, args=(name,))
     t.start()
 #     t.join()
     
