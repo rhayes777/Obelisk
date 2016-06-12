@@ -4,11 +4,17 @@
  
 int ledPin = 13;                // choose the pin for the LED
 int inputPins[] = {2, 3, 4};
-int pirStates[] = {LOW, LOW, LOW};
+int pirStates[3] = {};
+int numberOfPins = 0;
  
 void setup() {
   pinMode(ledPin, OUTPUT);      // declare LED as output
-  for (int n = 0; n < (sizeof(inputPins)/sizeof(int)); n++) {
+  numberOfPins = sizeof(inputPins)/sizeof(int);
+
+  Serial.println(numberOfPins);
+  Serial.println("Here");
+  
+  for (int n = 0; n < numberOfPins; n++) {
     pinMode(inputPins[n], INPUT);
   }
   
@@ -32,18 +38,24 @@ int readPin(int pin, int state, String title) {
 }
  
 void loop(){
+//  Serial.println(numberOfPins);
 
   bool isChangedState = false;
 
-  for (int n = 0; n < (sizeof(inputPins)/sizeof(int)); n++) {
+  String stateString = "[";
+
+  for (int n = 0; n < numberOfPins; n++) {
     int oldState = pirStates[n];
     int newState = readPin(inputPins[n], oldState, String(n));
     pirStates[n] = newState;
+    String delimeter = n < numberOfPins - 1 ? "," : "]";
+    stateString = stateString + String(newState) + delimeter;
     if (newState != oldState) {
       isChangedState = true;
     }
   }
   
-  if (isChangedState) 
-    Serial.write((uint8_t*)pirStates, sizeof(pirStates));
+  if (isChangedState) {
+     Serial.println(stateString);
+  }
 }
