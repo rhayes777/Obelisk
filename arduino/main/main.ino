@@ -1,38 +1,37 @@
-/*  
-    Arduino with PIR motion sensor
-    For complete project details, visit: http://RandomNerdTutorials.com/pirsensor
-    Modified by Rui Santos based on PIR sensor by Limor Fried
-*/
+/*
+ * PIR sensor tester
+ */
  
-int led = 13;                // the pin that the LED is atteched to
-int sensor = 2;              // the pin that the sensor is atteched to
-int state = LOW;             // by default, no motion detected
-int val = 0;                 // variable to store the sensor status (value)
-
+int ledPin = 13;                // choose the pin for the LED
+int inputPin1 = 2;               // choose the input pin (for PIR sensor)
+int inputPin2 = 3;
+int pirState = LOW;             // we start, assuming no motion detected
+int val = 0;                    // variable for reading the pin status
+ 
 void setup() {
-  pinMode(led, OUTPUT);      // initalize LED as an output
-  pinMode(sensor, INPUT);    // initialize sensor as an input
-  Serial.begin(9600);        // initialize serial
+  pinMode(ledPin, OUTPUT);      // declare LED as output
+  pinMode(inputPin2, INPUT);     // declare sensor as input
+ 
+  Serial.begin(9600);
 }
-
+ 
 void loop(){
-  val = digitalRead(sensor);   // read sensor value
-  if (val == HIGH) {           // check if the sensor is HIGH
-    digitalWrite(led, HIGH);   // turn LED ON
-    delay(100);                // delay 100 milliseconds 
-    
-    if (state == LOW) {
-      Serial.println("Motion detected!"); 
-      state = HIGH;       // update variable state to HIGH
+  val = digitalRead(inputPin2);  // read input value
+  if (val == HIGH) {            // check if the input is HIGH
+    digitalWrite(ledPin, HIGH);  // turn LED ON
+    if (pirState == LOW) {
+      // we have just turned on
+      Serial.println("Motion detected!");
+      // We only want to print on the output change, not state
+      pirState = HIGH;
     }
-  } 
-  else {
-      digitalWrite(led, LOW); // turn LED OFF
-      delay(200);             // delay 200 milliseconds 
-      
-      if (state == HIGH){
-        Serial.println("Motion stopped!");
-        state = LOW;       // update variable state to LOW
+  } else {
+    digitalWrite(ledPin, LOW); // turn LED OFF
+    if (pirState == HIGH){
+      // we have just turned of
+      Serial.println("Motion ended!");
+      // We only want to print on the output change, not state
+      pirState = LOW;
     }
   }
 }
