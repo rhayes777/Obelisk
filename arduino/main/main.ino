@@ -18,6 +18,10 @@ void setup() {
 
 int readPin(int pin, int state, String title) {
   int val = digitalRead(pin);  // read input value
+//  Serial.println(title);
+//  Serial.println(pin);
+//  Serial.println(state);
+//  Serial.println(val);
   if (val == HIGH) {            // check if the input is HIGH
     digitalWrite(ledPin, HIGH);  // turn LED ON
     if (state == LOW) {
