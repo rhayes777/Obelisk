@@ -9,14 +9,14 @@ from time import sleep
 
 # http://playground.arduino.cc/Interfacing/Python
 
-actions = [([0, 0, 0], "Acro_Pad_C.wav"),
-           ([1, 0, 0], "Deepkord_Pad_C.wav"),
-           ([0, 1, 0], "Lode_Pad.wav"),
-           ([0, 0, 1], "Spacebee_Pad.wav"),
-           ([1, 1, 0], "Spooky_Pad_C.wav"),
-           ([0, 1, 1], "Synthex_Pad.wav"),
-           ([1, 0, 1], "Wavedrift_Pad_C.wav"),
-           ([1, 1, 1], "Zplane_Pad.wav")]
+actions = [([0, 0, 0], "Acro_Pad_C_converted.wav"),
+           ([1, 0, 0], "Deepkord_Pad_C_converted.wav"),
+           ([0, 1, 0], "Lode_Pad_converted.wav"),
+           ([0, 0, 1], "Spacebee_Pad_converted.wav"),
+           ([1, 1, 0], "Spooky_Pad_C_converted.wav"),
+           ([0, 1, 1], "Synthex_Pad_converted.wav"),
+           ([1, 0, 1], "Wavedrift_Pad_C_converted.wav"),
+           ([1, 1, 1], "Zplane_Pad_converted.wav")]
 
 # Instantiate PyAudio.
 p = pyaudio.PyAudio()
@@ -52,6 +52,10 @@ def loop_wav(wav_filename, chunk_size=CHUNK_SIZE):
         sys.stderr.write('EOFError on file ' + wav_filename + '\n' + \
                          str(eofe) + '. Skipping.\n')
         return
+
+    print "framerate = {}".format(wf.getframerate())
+    print "sampwidth = {}".format(wf.getsampwidth())
+    print "nchannels = {}".format(wf.getnchannels())
 
     # Open stream.
     stream = p.open(format=p.get_format_from_width(wf.getsampwidth()),
@@ -97,9 +101,9 @@ def bash_command(string):
 
 
 if __name__ == "__main__":
-    # loop()
+    loop()
 
-    loop_wav_on_new_thread("Acro_Pad_C.wav")
+    # loop_wav_on_new_thread("Acro_Pad_C_converted.wav")
     #     play_wav_on_new_thread("Alesis-S4-Plus-Piccolo-C5.wav")
     #     play_wav_on_new_thread("Casio-CZ-5000-Human-Voice-C4.wav")
     #     play_wav_on_new_thread("Casio-CZ-5000-Synth-Bass-C1.wav")
