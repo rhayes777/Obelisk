@@ -10,6 +10,9 @@ import struct
 
 # http://playground.arduino.cc/Interfacing/Python
 
+FADE_LENGTH = 500
+CHUNK_SIZE = 1024
+
 actions = [([0, 0, 0], "Acro_Pad_C_converted.wav"),
            ([1, 0, 0], "Deepkord_Pad_C_converted.wav"),
            ([0, 1, 0], "Lode_Pad_converted.wav"),
@@ -19,15 +22,69 @@ actions = [([0, 0, 0], "Acro_Pad_C_converted.wav"),
            ([1, 0, 1], "Wavedrift_Pad_C_converted.wav"),
            ([1, 1, 1], "Zplane_Pad_converted.wav")]
 
+
+class AudioLoop:
+    def __init__(self, loop_name, volume=1):
+        self.loop_name = loop_name
+        self.wf = wave.open(loop_name, 'rb')
+        self.stream = p.open(format=p.get_format_from_width(self.wf.getsampwidth()),
+                             channels=self.wf.getnchannels(),
+                             rate=self.wf.getframerate(),
+                             output=True)
+        self.data = self.wf.readframes(CHUNK_SIZE)
+        self.volume = volume
+        self.is_playing_continuously = False
+        self.is_fading_in = False
+        self.is_fading_out = False
+
+    def play_continuously(self):
+        self.is_playing_continuously = True
+        while self.is_playing_continuously:
+            if self.is_fading_in:
+                self.volume += 0.1
+            if self.is_fading_out:
+                self.volume -= 0.1
+            if self.volume < 0:
+                if self.is_fading_out:
+                    self.stop()
+            if self.volume > 1:
+                self.is_fading_in = False
+                self.volume = 1
+            arr = self.volume * numpy.fromstring(self.data, numpy.int16)
+            data = struct.pack('h' * len(arr), *arr)
+            self.stream.write(data)
+            data = self.wf.readframes(CHUNK_SIZE)
+            if data == '':  # If file is over then rewind.
+                self.wf.rewind()
+                self.data = self.wf.readframes(CHUNK_SIZE)
+
+    def stop(self):
+        # Stop stream.
+        self.is_playing_continuously = False
+        self.stream.stop_stream()
+        self.stream.close()
+
+    def fade_in(self):
+        self.is_fading_in = True
+        self.is_fading_out = False
+
+    def fade_out(self):
+        self.is_fading_in = False
+        self.is_fading_out = True
+
+
 # Instantiate PyAudio.
 p = pyaudio.PyAudio()
 should_play = False
 is_sample_finished = True
+current_loop = AudioLoop("Acro_Pad_C_converted.wav")
 
 
 def loop():
+    global current_loop
     loop_wav_on_new_thread("Acro_Pad_C_converted.wav")
     ser = serial.Serial('/dev/cu.usbmodem1411', 9600)
+
     while True:
         line = ser.readline().strip()
         print line
@@ -35,10 +92,13 @@ def loop():
 
         for action in actions:
             if arr == action[0]:
-                loop_wav_on_new_thread(action[1])
-
-
-CHUNK_SIZE = 1024
+                print "next loop changed"
+                next_loop = AudioLoop(action[1], 1)
+                Thread(target=next_loop.play_continuously).start()
+                next_loop.fade_in()
+                current_loop.fade_out()
+                current_loop = next_loop
+                print next_loop.loop_name
 
 
 def loop_wav(wav_filename, chunk_size=CHUNK_SIZE):
@@ -70,8 +130,8 @@ def loop_wav(wav_filename, chunk_size=CHUNK_SIZE):
     # PLAYBACK LOOP
     data = wf.readframes(CHUNK_SIZE)
     while should_play:
-        arr = numpy.fromstring(data, numpy.int16) 
-        data = struct.pack('h'*len(arr), *arr)
+        arr = numpy.fromstring(data, numpy.int16)
+        data = struct.pack('h' * len(arr), *arr)
         stream.write(data)
         data = wf.readframes(CHUNK_SIZE)
         if data == '':  # If file is over then rewind.
@@ -98,4 +158,3 @@ def loop_wav_on_new_thread(name):
 
 if __name__ == "__main__":
     loop()
-
