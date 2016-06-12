@@ -80,9 +80,6 @@ def loop_wav(wav_filename, chunk_size=CHUNK_SIZE):
     stream.stop_stream()
     stream.close()
 
-    # # Close PyAudio.
-    # p.terminate()
-
 
 def loop_wav_on_new_thread(name):
     global should_play
@@ -95,20 +92,6 @@ def loop_wav_on_new_thread(name):
     t.start()
 
 
-def bash_command(string):
-    print string
-    system(string)
-
-
 if __name__ == "__main__":
     loop()
 
-    # loop_wav_on_new_thread("Acro_Pad_C_converted.wav")
-    #     play_wav_on_new_thread("Alesis-S4-Plus-Piccolo-C5.wav")
-    #     play_wav_on_new_thread("Casio-CZ-5000-Human-Voice-C4.wav")
-    #     play_wav_on_new_thread("Casio-CZ-5000-Synth-Bass-C1.wav")
-    #     play_wav_on_new_thread("Crash-Cymbal-1.wav")
-    #     play_wav_on_new_thread("Cuica-1.wav")
-    #     play_wav_on_new_thread("E-Mu-Proteus-2-Tubular-Bell-C5.wav")
-    #     play_wav_on_new_thread("Alesis-S4-Plus-Calliope-C4.wav")
-    #     play_wav_on_new_thread("Roland-GR-1-12-String-Guitar-C4.wav")
