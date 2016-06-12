@@ -15,7 +15,7 @@ actions = [([0, 0, 0], "Roland-GR-1-12-String-Guitar-C4.wav"),
 ([1, 1, 0], "Crash-Cymbal-1.wav"), 
 ([0, 1, 1], "Cuica-1.wav"),
 ([1, 0, 1], "E-Mu-Proteus-2-Tubular-Bell-C5.wav"), 
-([1, 1, 1], "E-Mu-Proteus-FX-FrHorns2-C4.wav")]
+([1, 1, 1], "Alesis-S4-Plus-Calliope-C4.wav")]
 
 # Instantiate PyAudio.
 p = pyaudio.PyAudio()
