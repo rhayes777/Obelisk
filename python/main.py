@@ -9,14 +9,14 @@ from time import sleep
 
 # http://playground.arduino.cc/Interfacing/Python
 
-actions = [([0, 0, 0], "Acro_Pad_C_converted.wav"),
-           ([1, 0, 0], "Deepkord_Pad_C_converted.wav"),
-           ([0, 1, 0], "Lode_Pad_converted.wav"),
-           ([0, 0, 1], "Spacebee_Pad_converted.wav"),
-           ([1, 1, 0], "Spooky_Pad_C_converted.wav"),
-           ([0, 1, 1], "Synthex_Pad_converted.wav"),
-           ([1, 0, 1], "Wavedrift_Pad_C_converted.wav"),
-           ([1, 1, 1], "Zplane_Pad_converted.wav")]
+actions = [([0, 0, 0], "1.wav"),
+           ([1, 0, 0], "2.wav"),
+           ([0, 1, 0], "3.wav"),
+           ([0, 0, 1], "4.wav"),
+           ([1, 1, 0], "5.wav"),
+           ([0, 1, 1], "6.wav"),
+           ([1, 0, 1], "7.wav"),
+           ([1, 1, 1], "8.wav")]
 
 # Instantiate PyAudio.
 p = pyaudio.PyAudio()
@@ -25,7 +25,7 @@ is_sample_finished = True
 
 
 def loop():
-    loop_wav_on_new_thread("Acro_Pad_C_converted.wav")
+    loop_wav_on_new_thread("1.wav")
     ser = serial.Serial('/dev/cu.usbmodem1411', 9600)
     while True:
         line = ser.readline().strip()
