@@ -53,10 +53,7 @@ def loop_wav(wav_filename, chunk_size=CHUNK_SIZE):
         sys.stderr.write('EOFError on file ' + wav_filename + '\n' + \
                          str(eofe) + '. Skipping.\n')
         return
-
-    print "framerate = {}".format(wf.getframerate())
-    print "sampwidth = {}".format(wf.getsampwidth())
-    print "nchannels = {}".format(wf.getnchannels())
+    
 
     # Open stream.
     stream = p.open(format=p.get_format_from_width(wf.getsampwidth()),
