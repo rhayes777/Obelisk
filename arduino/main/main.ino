@@ -1,14 +1,11 @@
-/*
- * PIR sensor tester
- */
- 
-int ledPin = 13;                // choose the pin for the LED
+
+int ledPin = 13;                
 int inputPins[] = {2, 3, 4};
 int pirStates[3] = {};
 int numberOfPins = 0;
  
 void setup() {
-  pinMode(ledPin, OUTPUT);      // declare LED as output
+  pinMode(ledPin, OUTPUT);    
   numberOfPins = sizeof(inputPins)/sizeof(int);
   
   for (int n = 0; n < numberOfPins; n++) {
@@ -19,14 +16,14 @@ void setup() {
 }
 
 int readPin(int pin, int state, String title) {
-  int val = digitalRead(pin);  // read input value
-  if (val == HIGH) {            // check if the input is HIGH
-    digitalWrite(ledPin, HIGH);  // turn LED ON
+  int val = digitalRead(pin);  
+  if (val == HIGH) {           
+    digitalWrite(ledPin, HIGH); 
     if (state == LOW) {
       state = HIGH;
     }
   } else {
-    digitalWrite(ledPin, LOW); // turn LED OFF
+    digitalWrite(ledPin, LOW);
     if (state == HIGH){
       state = LOW;
     }
@@ -35,7 +32,6 @@ int readPin(int pin, int state, String title) {
 }
  
 void loop(){
-//  Serial.println(numberOfPins);
 
   bool isChangedState = false;
 
