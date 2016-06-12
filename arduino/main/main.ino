@@ -10,9 +10,6 @@ int numberOfPins = 0;
 void setup() {
   pinMode(ledPin, OUTPUT);      // declare LED as output
   numberOfPins = sizeof(inputPins)/sizeof(int);
-
-  Serial.println(numberOfPins);
-  Serial.println("Here");
   
   for (int n = 0; n < numberOfPins; n++) {
     pinMode(inputPins[n], INPUT);
