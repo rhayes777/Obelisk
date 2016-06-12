@@ -3,39 +3,28 @@
  */
  
 int ledPin = 13;                // choose the pin for the LED
-int inputPin1 = 2;               // choose the input pin (for PIR sensor)
-int inputPin2 = 3;
-int pirState1 = LOW;             // we start, assuming no motion detected
-int pirState2 = LOW;                 // variable for reading the pin status
+int inputPins[] = {2, 3, 4};
+int pirStates[] = {LOW, LOW, LOW};
  
 void setup() {
   pinMode(ledPin, OUTPUT);      // declare LED as output
-  pinMode(inputPin1, INPUT);     // declare sensor as input
-  pinMode(inputPin2, INPUT);     // declare sensor as input
- 
+  for (int n = 0; n < (sizeof(inputPins)/sizeof(int)); n++) {
+    pinMode(inputPins[n], INPUT);
+  }
+  
   Serial.begin(9600);
 }
 
 int readPin(int pin, int state, String title) {
   int val = digitalRead(pin);  // read input value
-//  Serial.println(title);
-//  Serial.println(pin);
-//  Serial.println(state);
-//  Serial.println(val);
   if (val == HIGH) {            // check if the input is HIGH
     digitalWrite(ledPin, HIGH);  // turn LED ON
     if (state == LOW) {
-      // we have just turned on
-      Serial.println(title + " on");
-      // We only want to print on the output change, not state
       state = HIGH;
     }
   } else {
     digitalWrite(ledPin, LOW); // turn LED OFF
     if (state == HIGH){
-      // we have just turned of
-      Serial.println(title + " off");
-      // We only want to print on the output change, not state
       state = LOW;
     }
   }
@@ -43,6 +32,18 @@ int readPin(int pin, int state, String title) {
 }
  
 void loop(){
-  pirState1 = readPin(inputPin1, pirState1, "First sensor");
-  pirState2 = readPin(inputPin2, pirState2, "Second sensor");
+
+  bool isChangedState = false;
+
+  for (int n = 0; n < (sizeof(inputPins)/sizeof(int)); n++) {
+    int oldState = pirStates[n];
+    int newState = readPin(inputPins[n], oldState, String(n));
+    pirStates[n] = newState;
+    if (newState != oldState) {
+      isChangedState = true;
+    }
+  }
+  
+  if (isChangedState) 
+    Serial.write((uint8_t*)pirStates, sizeof(pirStates));
 }

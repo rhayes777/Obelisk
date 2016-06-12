@@ -5,15 +5,15 @@ from os import system
 # http://playground.arduino.cc/Interfacing/Python
 
 def loop():
-    ser = serial.Serial('/dev/cu.usbmodem1421', 9600)
+    ser = serial.Serial('/dev/cu.usbmodem1411', 9600)
     while True:
         line = ser.readline()
         print line
-        print type(line)
-        if "First" in line:
-            bash_command("python /Users/richardhayes/Desktop/OtherWork/HueScripts/light_control.py on")
-        if "Second" in line:
-            bash_command("python /Users/richardhayes/Desktop/OtherWork/HueScripts/light_control.py off")
+#         print type(line)
+#         if "First" in line:
+#             
+#         if "Second" in line:
+            
     
 def bash_command(string):
     print string
