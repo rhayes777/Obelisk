@@ -1,11 +1,12 @@
 import serial
-from os import system
 import ast
 import pyaudio
 import sys
 import wave
 from threading import Thread
 from time import sleep
+import numpy
+import struct
 
 # http://playground.arduino.cc/Interfacing/Python
 
@@ -54,9 +55,9 @@ def loop_wav(wav_filename, chunk_size=CHUNK_SIZE):
                          str(eofe) + '. Skipping.\n')
         return
 
-    print "framerate = {}".format(wf.getframerate())
-    print "sampwidth = {}".format(wf.getsampwidth())
-    print "nchannels = {}".format(wf.getnchannels())
+    # print "framerate = {}".format(wf.getframerate())
+    # print "sampwidth = {}".format(wf.getsampwidth())
+    # print "nchannels = {}".format(wf.getnchannels())
 
     # Open stream.
     stream = p.open(format=p.get_format_from_width(wf.getsampwidth()),
@@ -69,6 +70,8 @@ def loop_wav(wav_filename, chunk_size=CHUNK_SIZE):
     # PLAYBACK LOOP
     data = wf.readframes(CHUNK_SIZE)
     while should_play:
+        arr = numpy.fromstring(data, numpy.int16) 
+        data = struct.pack('h'*len(arr), *arr)
         stream.write(data)
         data = wf.readframes(CHUNK_SIZE)
         if data == '':  # If file is over then rewind.
