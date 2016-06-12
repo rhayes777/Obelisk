@@ -21,7 +21,7 @@ actions = [([0, 0, 0], "Roland-GR-1-12-String-Guitar-C4.wav"),
 # Instantiate PyAudio.
 p = pyaudio.PyAudio()
 should_play = False
-is_sample_finished = False
+is_sample_finished = True
 
 
 def loop():
@@ -85,7 +85,7 @@ def loop_wav(wav_filename, chunk_size=CHUNK_SIZE):
 def loop_wav_on_new_thread(name):
     global should_play
     should_play = False
-    while is_sample_finished:
+    while not is_sample_finished:
         sleep(0.01)
     should_play = True
 
