@@ -36,8 +36,6 @@ def loop():
                 loop_wav_on_new_thread(action[1])
 
 
-# play_wav(action[1])
-
 CHUNK_SIZE = 1024
 
 
@@ -93,17 +91,15 @@ def loop_wav_on_new_thread(name):
     t.start()
 
 
-#     t.join()
-
-
 def bash_command(string):
     print string
     system(string)
 
 
 if __name__ == "__main__":
-    loop()
+    # loop()
 
+    loop_wav_on_new_thread("Acro_Pad_C.wav")
     #     play_wav_on_new_thread("Alesis-S4-Plus-Piccolo-C5.wav")
     #     play_wav_on_new_thread("Casio-CZ-5000-Human-Voice-C4.wav")
     #     play_wav_on_new_thread("Casio-CZ-5000-Synth-Bass-C1.wav")
