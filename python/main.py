@@ -11,9 +11,9 @@ def loop():
         print line
         print type(line)
         if "First" in line:
-            bash_command("python /Users/richardhayes/Desktop/OtherWork/HueScripts/light_control.py random")
+            bash_command("python /Users/richardhayes/Desktop/OtherWork/HueScripts/light_control.py on")
         if "Second" in line:
-            bash_command("python /Users/richardhayes/Desktop/OtherWork/HueScripts/light_control.py random")
+            bash_command("python /Users/richardhayes/Desktop/OtherWork/HueScripts/light_control.py off")
     
 def bash_command(string):
     print string
