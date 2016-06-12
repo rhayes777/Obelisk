@@ -25,6 +25,7 @@ is_sample_finished = True
 
 
 def loop():
+    loop_wav_on_new_thread("Acro_Pad_C_converted.wav")
     ser = serial.Serial('/dev/cu.usbmodem1411', 9600)
     while True:
         line = ser.readline().strip()
