@@ -9,9 +9,10 @@ def loop():
     while True:
         line = ser.readline()
         print line
-        if "detected" in line:
+        print type(line)
+        if "First" in line:
             bash_command("python /Users/richardhayes/Desktop/OtherWork/HueScripts/light_control.py random")
-        if "ended" in line:
+        if "Second" in line:
             bash_command("python /Users/richardhayes/Desktop/OtherWork/HueScripts/light_control.py random")
     
 def bash_command(string):
