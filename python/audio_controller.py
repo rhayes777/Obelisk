@@ -60,13 +60,13 @@ def loop_wav(wav_filename, chunk_size=CHUNK_SIZE):
     # PLAYBACK LOOP
     data = wf.readframes(CHUNK_SIZE)
     while should_play:
-        logging.debug("playing")
+
         stream.write(data)
-        logging.debug("data written")
+
         data = wf.readframes(CHUNK_SIZE)
-        logging.debug("data read")
+
         if data == '':  # If file is over then rewind.
-            logging.debug("rewinding")
+
             wf.rewind()
             data = wf.readframes(CHUNK_SIZE)
         
