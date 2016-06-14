@@ -13,17 +13,8 @@ MIDDLE_LIMIT = 1000
 
 SAMPLE_SIZE = 10
 
-ACRO_PAD_C = "Acro_Pad_C.wav"
-DEEPKORD_PAD_C = "Deepkord_Pad_C.wav"
-LODE_PAD = "Lode_Pad.wav"
-SPACEBEE_PAD = "Spacebee_Pad.wav"
-SPOOKT_PAD_C = "Spooky_Pad_C.wav"
-SYTHEX_PAD = "Synthex_Pad.wav"
-WAVEDRIFT_PAD_C = "Wavedrift_Pad_C.wav"
-ZPLANE_PAD = "Zplane_Pad.wav"
-
 actions = {str([0, 0, 0]): audio_controller.ACRO_PAD_C,
-           str([1, 0, 0]): audio_controller.DEEPKORD_PAD_C,
+           str([1, 0, 0]): audio_controller.WAVEDRIFT_PAD_C,
            str([0, 1, 0]): audio_controller.LODE_PAD,
            str([0, 0, 1]): audio_controller.SPACEBEE_PAD,
            str([1, 1, 0]): audio_controller.SPOOKT_PAD_C,
@@ -57,4 +48,5 @@ def loop():
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.DEBUG)
     loop()
