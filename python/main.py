@@ -49,7 +49,7 @@ def loop_wav(wav_filename, chunk_size=CHUNK_SIZE):
     global is_sample_finished
     try:
         logging.info('Trying to play file ' + wav_filename)
-        wf = wave.open(wav_filename, 'rb')
+        wf = wave.open("samples/" + wav_filename, 'rb')
     except IOError as ioe:
         sys.stderr.write('IOError on file ' + wav_filename + '\n' + \
                          str(ioe) + '. Skipping.\n')
