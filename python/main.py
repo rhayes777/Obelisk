@@ -9,7 +9,7 @@ from time import sleep
 import numpy
 import struct
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 
 # http://playground.arduino.cc/Interfacing/Python
 
@@ -49,7 +49,7 @@ def loop_wav(wav_filename, chunk_size=CHUNK_SIZE):
     global is_sample_finished
     try:
         logging.info('Trying to play file ' + wav_filename)
-        wf = wave.open("samples/" + wav_filename, 'rb')
+        wf = wave.open(wav_filename, 'rb')
     except IOError as ioe:
         sys.stderr.write('IOError on file ' + wav_filename + '\n' + \
                          str(ioe) + '. Skipping.\n')
@@ -112,5 +112,5 @@ def loop_wav_on_new_thread(name):
     t.start()
 
 
-# if __name__=="__main__":
-#     loop()
+if __name__=="__main__":
+    loop()
