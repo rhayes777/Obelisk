@@ -1,17 +1,17 @@
 import logging
 import serial
 import ast
-import pyaudio
-import sys
-import wave
-from threading import Thread
-from time import sleep
-import numpy
-import struct
+import audio_controller
+from operator import add
 
 logging.basicConfig(level=logging.INFO)
 
 # http://playground.arduino.cc/Interfacing/Python
+
+UPPER_LIMIT = 2000
+MIDDLE_LIMIT = 1000
+
+SAMPLE_SIZE = 10
 
 ACRO_PAD_C = "Acro_Pad_C.wav"
 DEEPKORD_PAD_C = "Deepkord_Pad_C.wav"
@@ -22,95 +22,37 @@ SYTHEX_PAD = "Synthex_Pad.wav"
 WAVEDRIFT_PAD_C = "Wavedrift_Pad_C.wav"
 ZPLANE_PAD = "Zplane_Pad.wav"
 
-
-# Instantiate PyAudio.
-p = pyaudio.PyAudio()
-should_play = True
-is_sample_finished = True
+actions = {[0, 0, 0]: audio_controller.ACRO_PAD_C,
+           [1, 0, 0]: audio_controller.DEEPKORD_PAD_C,
+           [0, 1, 0]: audio_controller.LODE_PAD,
+           [0, 0, 1]: audio_controller.SPACEBEE_PAD,
+           [1, 1, 0]: audio_controller.SPOOKT_PAD_C,
+           [0, 1, 1]: audio_controller.SYTHEX_PAD,
+           [1, 0, 1]: audio_controller.WAVEDRIFT_PAD_C,
+           [1, 1, 1]: audio_controller.ZPLANE_PAD
+           }
 
 
 def loop():
-    loop_wav_on_new_thread("Acro_Pad_C.wav")
+    previous_result_array = None
+    audio_controller.loop_next_wav_by_name(audio_controller.ACRO_PAD_C)
     ser = serial.Serial('/dev/cu.usbmodem1421', 9600)
     while True:
         line = ser.readline().strip()
         logging.debug(line)
-        arr = ast.literal_eval(line)
+        input_array = ast.literal_eval(line)
 
-        for action in actions:
-            if arr == action[0]:
-                loop_wav_on_new_thread(action[1])
+        current_sample = 0
+        sample_array = len(input_array) * [0]
+        while current_sample < SAMPLE_SIZE:
+            sample_array = map(add, sample_array, input_array)
 
+        average_array = map(lambda total: total / SAMPLE_SIZE, sample_array)
+        result_array = map(lambda result: 1 if result < UPPER_LIMIT else 0, average_array)
 
-CHUNK_SIZE = 1024
-
-
-def loop_wav(wav_filename, chunk_size=CHUNK_SIZE):
-    global is_sample_finished
-    try:
-        logging.info('Trying to play file ' + wav_filename)
-        wf = wave.open("samples/" + wav_filename, 'rb')
-    except IOError as ioe:
-        sys.stderr.write('IOError on file ' + wav_filename + '\n' + \
-                         str(ioe) + '. Skipping.\n')
-        return
-    except EOFError as eofe:
-        sys.stderr.write('EOFError on file ' + wav_filename + '\n' + \
-                         str(eofe) + '. Skipping.\n')
-        return
-
-    # logging.debug("framerate = {}".format(wf.getframerate())
-    # logging.debug("sampwidth = {}".format(wf.getsampwidth())
-    # logging.debug("nchannels = {}".format(wf.getnchannels())
-    
-    logging.debug("opening stream")
-
-    # Open stream.
-    stream = p.open(format=p.get_format_from_width(wf.getsampwidth()),
-                    channels=wf.getnchannels(),
-                    rate=wf.getframerate(),
-                    output=True)
-
-    is_sample_finished = False
-    
-    logging.debug("getting data")
-
-    # PLAYBACK LOOP
-    data = wf.readframes(CHUNK_SIZE)
-    while should_play:
-        logging.debug("playing")
-#         arr = numpy.fromstring(data, numpy.int16) 
-#         data = struct.pack('h'*len(arr), *arr)
-        stream.write(data)
-        logging.debug("data written")
-        data = wf.readframes(CHUNK_SIZE)
-        logging.debug("data read")
-        if data == '':  # If file is over then rewind.
-            logging.debug("rewinding")
-            wf.rewind()
-            data = wf.readframes(CHUNK_SIZE)
-        
-    logging.debug("sample finished")
-
-    is_sample_finished = True
-
-    # Stop stream.
-    logging.debug("stopping stream")
-    stream.stop_stream()
-    logging.debug("closing stream")
-    stream.close()
+        if result_array != previous_result_array:
+            audio_controller.loop_next_wav_by_name(actions[result_array])
 
 
-def loop_wav_on_new_thread(name):
-    global should_play
-    should_play = False
-    while not is_sample_finished:
-        sleep(0.01)
-    should_play = True
-
-    t = Thread(target=loop_wav, args=(name,))
-    t.start()
-
-
-if __name__=="__main__":
+if __name__ == "__main__":
     loop()
