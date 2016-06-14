@@ -1,3 +1,4 @@
+import logging
 import serial
 import ast
 import pyaudio
@@ -7,6 +8,8 @@ from threading import Thread
 from time import sleep
 import numpy
 import struct
+
+logging.basicConfig(level=logging.DEBUG)
 
 # http://playground.arduino.cc/Interfacing/Python
 
@@ -22,16 +25,16 @@ ZPLANE_PAD = "Zplane_Pad.wav"
 
 # Instantiate PyAudio.
 p = pyaudio.PyAudio()
-should_play = False
+should_play = True
 is_sample_finished = True
 
 
 def loop():
     loop_wav_on_new_thread("Acro_Pad_C.wav")
-    ser = serial.Serial('/dev/cu.usbmodem1411', 9600)
+    ser = serial.Serial('/dev/cu.usbmodem1421', 9600)
     while True:
         line = ser.readline().strip()
-        print line
+        logging.debug(line)
         arr = ast.literal_eval(line)
 
         for action in actions:
@@ -45,7 +48,7 @@ CHUNK_SIZE = 1024
 def loop_wav(wav_filename, chunk_size=CHUNK_SIZE):
     global is_sample_finished
     try:
-        print 'Trying to play file ' + wav_filename
+        logging.info('Trying to play file ' + wav_filename)
         wf = wave.open("samples/" + wav_filename, 'rb')
     except IOError as ioe:
         sys.stderr.write('IOError on file ' + wav_filename + '\n' + \
@@ -56,9 +59,11 @@ def loop_wav(wav_filename, chunk_size=CHUNK_SIZE):
                          str(eofe) + '. Skipping.\n')
         return
 
-    # print "framerate = {}".format(wf.getframerate())
-    # print "sampwidth = {}".format(wf.getsampwidth())
-    # print "nchannels = {}".format(wf.getnchannels())
+    # logging.debug("framerate = {}".format(wf.getframerate())
+    # logging.debug("sampwidth = {}".format(wf.getsampwidth())
+    # logging.debug("nchannels = {}".format(wf.getnchannels())
+    
+    logging.debug("opening stream")
 
     # Open stream.
     stream = p.open(format=p.get_format_from_width(wf.getsampwidth()),
@@ -67,22 +72,32 @@ def loop_wav(wav_filename, chunk_size=CHUNK_SIZE):
                     output=True)
 
     is_sample_finished = False
+    
+    logging.debug("getting data")
 
     # PLAYBACK LOOP
     data = wf.readframes(CHUNK_SIZE)
     while should_play:
-        arr = numpy.fromstring(data, numpy.int16) 
-        data = struct.pack('h'*len(arr), *arr)
+        logging.debug("playing")
+#         arr = numpy.fromstring(data, numpy.int16) 
+#         data = struct.pack('h'*len(arr), *arr)
         stream.write(data)
+        logging.debug("data written")
         data = wf.readframes(CHUNK_SIZE)
+        logging.debug("data read")
         if data == '':  # If file is over then rewind.
+            logging.debug("rewinding")
             wf.rewind()
             data = wf.readframes(CHUNK_SIZE)
+        
+    logging.debug("sample finished")
 
     is_sample_finished = True
 
     # Stop stream.
+    logging.debug("stopping stream")
     stream.stop_stream()
+    logging.debug("closing stream")
     stream.close()
 
 
@@ -97,6 +112,5 @@ def loop_wav_on_new_thread(name):
     t.start()
 
 
-if __name__ == "__main__":
-    loop()
-
+# if __name__=="__main__":
+#     loop()
