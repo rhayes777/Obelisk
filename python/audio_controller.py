@@ -12,7 +12,7 @@ logging.basicConfig(level=logging.INFO)
 ACRO_PAD_C = "Acro_Pad_C.wav"
 DEEPKORD_PAD_C = "Deepkord_Pad_C.wav"
 LODE_PAD = "Lode_Pad.wav"
-SPACEBEE_PAD = "Spacebee_Pad_converted.wav"
+SPACEBEE_PAD = "Spacebee_Pad.wav"
 SPOOKT_PAD_C = "Spooky_Pad_C.wav"
 SYTHEX_PAD = "Synthex_Pad.wav"
 WAVEDRIFT_PAD_C = "Wavedrift_Pad_C.wav"
@@ -74,14 +74,13 @@ def loop_wav(wav_filename, chunk_size=CHUNK_SIZE):
         
     logging.debug("sample finished")
 
-    is_sample_finished = True
-
     # Stop stream.
     logging.debug("stopping stream")
     stream.stop_stream()
     logging.debug("closing stream")
     stream.close()
 
+    is_sample_finished = True
 
 def loop_next_wav_by_name(name):
     global should_play
