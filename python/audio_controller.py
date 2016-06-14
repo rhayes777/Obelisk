@@ -5,12 +5,10 @@ import wave
 from threading import Thread
 from time import sleep
 
-logging.basicConfig(level=logging.INFO)
-
 # http://playground.arduino.cc/Interfacing/Python
 
 ACRO_PAD_C = "Acro_Pad_C.wav"
-DEEPKORD_PAD_C = "Deepkord_Pad_C.wav"
+ORION_PAD = "Orion_Pad.wav"
 LODE_PAD = "Lode_Pad.wav"
 SPACEBEE_PAD = "Spacebee_Pad.wav"
 SPOOKT_PAD_C = "Spooky_Pad_C.wav"
