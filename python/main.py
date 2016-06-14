@@ -10,6 +10,10 @@ import struct
 
 # http://playground.arduino.cc/Interfacing/Python
 
+ACRO_PAD_C = "Acro_Pad_C.wav"
+DEEPKORD_PAD_C = "Deepkord_Pad_C.wav"
+LODE_PAD_CONVERTED = "Lode_Pad.wav"
+
 actions = [([0, 0, 0], "Acro_Pad_C_converted.wav"),
            ([1, 0, 0], "Deepkord_Pad_C_converted.wav"),
            ([0, 1, 0], "Lode_Pad_converted.wav"),
