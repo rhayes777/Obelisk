@@ -12,16 +12,13 @@ import struct
 
 ACRO_PAD_C = "Acro_Pad_C.wav"
 DEEPKORD_PAD_C = "Deepkord_Pad_C.wav"
-LODE_PAD_CONVERTED = "Lode_Pad.wav"
+LODE_PAD = "Lode_Pad.wav"
+SPACEBEE_PAD = "Spacebee_Pad_converted.wav"
+SPOOKT_PAD_C = "Spooky_Pad_C.wav"
+SYTHEX_PAD = "Synthex_Pad.wav"
+WAVEDRIFT_PAD_C = "Wavedrift_Pad_C.wav"
+ZPLANE_PAD = "Zplane_Pad.wav"
 
-actions = [([0, 0, 0], "Acro_Pad_C_converted.wav"),
-           ([1, 0, 0], "Deepkord_Pad_C_converted.wav"),
-           ([0, 1, 0], "Lode_Pad_converted.wav"),
-           ([0, 0, 1], "Spacebee_Pad_converted.wav"),
-           ([1, 1, 0], "Spooky_Pad_C_converted.wav"),
-           ([0, 1, 1], "Synthex_Pad_converted.wav"),
-           ([1, 0, 1], "Wavedrift_Pad_C_converted.wav"),
-           ([1, 1, 1], "Zplane_Pad_converted.wav")]
 
 # Instantiate PyAudio.
 p = pyaudio.PyAudio()
@@ -30,7 +27,7 @@ is_sample_finished = True
 
 
 def loop():
-    loop_wav_on_new_thread("Acro_Pad_C_converted.wav")
+    loop_wav_on_new_thread("Acro_Pad_C.wav")
     ser = serial.Serial('/dev/cu.usbmodem1411', 9600)
     while True:
         line = ser.readline().strip()
