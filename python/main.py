@@ -11,9 +11,15 @@ from operator import add
 UPPER_LIMIT = 5000
 MIDDLE_LIMIT = 1000
 
-SAMPLE_SIZE = 1
+SAMPLE_SIZE = 5
 
 INPUT_ARRAY_SIZE = 3
+
+sample_arrays = []
+for n in range(0, INPUT_ARRAY_SIZE):
+    sample_arrays.append(SAMPLE_SIZE * [2*UPPER_LIMIT])
+    
+print sample_arrays
 
 actions = {str([0, 0, 0]): audio_controller.ACRO_PAD_C,
            str([1, 0, 0]): audio_controller.WAVEDRIFT_PAD_C,
@@ -31,39 +37,28 @@ def loop():
     audio_controller.loop_next_wav_by_name(audio_controller.ACRO_PAD_C)
     ser = serial.Serial('/dev/cu.usbmodem1411', 9600)
 
-    current_sample = 0
-    sample_array = INPUT_ARRAY_SIZE * [0]
-    min_array = INPUT_ARRAY_SIZE * [10 * UPPER_LIMIT]
-
     while True:
         line = ser.readline().strip()
         input_array = ast.literal_eval(line)
-#         logging.debug("input_array = {}".format(input_array))
+        
+        sample_arrays.pop(0)
+        sample_arrays.append(input_array)
 
+        average_array = INPUT_ARRAY_SIZE * [0]
+        
+        for sample in sample_arrays:
+            average_array = map(add, average_array, sample)
+            
+        average_array = map(lambda item: item / SAMPLE_SIZE, average_array)
 
+        logging.debug("average_array = {}".format(average_array))
 
-        if current_sample < SAMPLE_SIZE:
-            sample_array = map(add, sample_array, input_array)
-#             for n in range(0, INPUT_ARRAY_SIZE):
-#                 if sample_array[n] < min_array[n]:
-#                     min_array[n] = sample_array[n]
-            current_sample += 1
-            print sample_array
-        else:
+        result_array = map(lambda result: 1 if result < UPPER_LIMIT else 0, average_array)
 
-            average_array = map(lambda total: total / SAMPLE_SIZE, sample_array)
-
-            logging.debug("average_array = {}".format(average_array))
-
-            result_array = map(lambda result: 1 if result < UPPER_LIMIT else 0, min_array)
-
-            if result_array != previous_result_array:
-                previous_result_array = result_array
-                audio_controller.loop_next_wav_by_name(actions[str(result_array)])
-                
-            current_sample = 0
-            sample_array = INPUT_ARRAY_SIZE * [0]
-            min_array = INPUT_ARRAY_SIZE * [10 * UPPER_LIMIT]   
+        if result_array != previous_result_array:
+            previous_result_array = result_array
+            audio_controller.loop_next_wav_by_name(actions[str(result_array)])
+             
             
 
 if __name__ == "__main__":
