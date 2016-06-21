@@ -29,18 +29,24 @@ actions = {str([0, 0, 0]): audio_controller.ACRO_PAD_C,
 def loop():
     previous_result_array = None
     audio_controller.loop_next_wav_by_name(audio_controller.ACRO_PAD_C)
-    ser = serial.Serial('/dev/cu.usbmodem1421', 9600)
+    ser = serial.Serial('/dev/cu.usbmodem1411', 9600)
 
     current_sample = 0
     sample_array = INPUT_ARRAY_SIZE * [0]
+    min_array = INPUT_ARRAY_SIZE * [10 * UPPER_LIMIT]
 
     while True:
         line = ser.readline().strip()
         input_array = ast.literal_eval(line)
 #         logging.debug("input_array = {}".format(input_array))
 
+
+
         if current_sample < SAMPLE_SIZE:
             sample_array = map(add, sample_array, input_array)
+#             for n in range(0, INPUT_ARRAY_SIZE):
+#                 if sample_array[n] < min_array[n]:
+#                     min_array[n] = sample_array[n]
             current_sample += 1
             print sample_array
         else:
@@ -49,7 +55,7 @@ def loop():
 
             logging.debug("average_array = {}".format(average_array))
 
-            result_array = map(lambda result: 1 if result < UPPER_LIMIT else 0, average_array)
+            result_array = map(lambda result: 1 if result < UPPER_LIMIT else 0, min_array)
 
             if result_array != previous_result_array:
                 previous_result_array = result_array
@@ -57,7 +63,8 @@ def loop():
                 
             current_sample = 0
             sample_array = INPUT_ARRAY_SIZE * [0]
-
+            min_array = INPUT_ARRAY_SIZE * [10 * UPPER_LIMIT]   
+            
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
