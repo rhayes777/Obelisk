@@ -16,18 +16,20 @@ SYTHEX_PAD = "Synthex_Pad.wav"
 WAVEDRIFT_PAD_C = "Wavedrift_Pad_C.wav"
 ZPLANE_PAD = "Zplane_Pad.wav"
 
+VOLUME_STEP = 0.001
+
 
 # Instantiate PyAudio.
 p = pyaudio.PyAudio()
 should_play = True
-is_sample_finished = True
+is_sample_tapering = True
 
 
 CHUNK_SIZE = 1024
 
 
 def loop_wav(wav_filename, chunk_size=CHUNK_SIZE):
-    global is_sample_finished
+    global is_sample_tapering
 
     try:
         logging.info('Trying to play file ' + wav_filename)
@@ -53,13 +55,15 @@ def loop_wav(wav_filename, chunk_size=CHUNK_SIZE):
                     rate=wf.getframerate(),
                     output=True)
 
-    is_sample_finished = False
+    is_sample_tapering = False
     
     logging.debug("getting data")
-
-    # PLAYBACK LOOP
-    data = wf.readframes(CHUNK_SIZE)
-    while should_play:
+    
+    volume = 0.0
+    
+    def play_moment():
+        arr = volume * numpy.fromstring(data, numpy.int16) 
+        data = struct.pack('h'*len(arr), *arr)
 
         stream.write(data)
 
@@ -69,7 +73,21 @@ def loop_wav(wav_filename, chunk_size=CHUNK_SIZE):
 
             wf.rewind()
             data = wf.readframes(CHUNK_SIZE)
-        
+    
+
+    # PLAYBACK LOOP
+    data = wf.readframes(CHUNK_SIZE)
+    while should_play:
+        if volume < 1:
+            volume += VOLUME_STEP
+        play_moment()
+    
+    is_sample_tapering = True
+    
+    while volume > 0:
+        volume -= VOLUME_STEP
+        play_moment()
+                
     logging.debug("sample finished")
 
     # Stop stream.
@@ -78,12 +96,11 @@ def loop_wav(wav_filename, chunk_size=CHUNK_SIZE):
     logging.debug("closing stream")
     stream.close()
 
-    is_sample_finished = True
 
 def loop_next_wav_by_name(name):
     global should_play
     should_play = False
-    while not is_sample_finished:
+    while not is_sample_tapering:
         sleep(0.01)
     should_play = True
 
