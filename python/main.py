@@ -16,8 +16,8 @@ SAMPLE_SIZE = 5
 INPUT_ARRAY_SIZE = 3
 
 sample_arrays = []
-for n in range(0, INPUT_ARRAY_SIZE):
-    sample_arrays.append(SAMPLE_SIZE * [2*UPPER_LIMIT])
+for n in range(0, SAMPLE_SIZE):
+    sample_arrays.append(INPUT_ARRAY_SIZE * [2*UPPER_LIMIT])
     
 print sample_arrays
 
@@ -46,7 +46,12 @@ def loop():
 
         average_array = INPUT_ARRAY_SIZE * [0]
         
+        print average_array
+        print sample_arrays
+        
         for sample in sample_arrays:
+            print average_array
+            print sample
             average_array = map(add, average_array, sample)
             
         average_array = map(lambda item: item / SAMPLE_SIZE, average_array)
