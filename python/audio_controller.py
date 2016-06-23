@@ -18,7 +18,7 @@ SYTHEX_PAD = "Synthex_Pad.wav"
 WAVEDRIFT_PAD_C = "Wavedrift_Pad_C.wav"
 ZPLANE_PAD = "Zplane_Pad.wav"
 
-VOLUME_STEP = 0.1
+VOLUME_STEP = 0.02
 
 data = None
 
