@@ -11,6 +11,7 @@ import util
 
 UPPER_LIMIT = 5000
 MIDDLE_LIMIT = 1000
+MARGIN = 1000
 
 SAMPLE_SIZE = 5
 
@@ -34,7 +35,7 @@ actions = {str([0, 0, 0]): audio_controller.ACRO_PAD_C,
 
 
 def loop():
-    previous_result_array = None
+    previous_result_array = INPUT_ARRAY_SIZE * [0]
     audio_controller.loop_next_wav_by_name(audio_controller.ACRO_PAD_C)
     ser = serial.Serial(util.get_arduino_port(), 9600)
 
@@ -54,6 +55,9 @@ def loop():
 
         logging.debug("average_array = {}".format(average_array))
 
+        for n in range(0, INPUT_ARRAY_SIZE):
+            result_array = 1 if average_array[n] < UPPER_LIMIT + previous_result_array[n] * MARGIN else 0
+        
         result_array = map(lambda result: 1 if result < UPPER_LIMIT else 0, average_array)
         
         logging.debug("result_array = {}".format(result_array))
