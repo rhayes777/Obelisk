@@ -3,6 +3,7 @@ import serial
 import ast
 import audio_controller
 from operator import add
+import util
 
 # logging.basicConfig(level=logging.INFO)
 
@@ -35,7 +36,7 @@ actions = {str([0, 0, 0]): audio_controller.ACRO_PAD_C,
 def loop():
     previous_result_array = None
     audio_controller.loop_next_wav_by_name(audio_controller.ACRO_PAD_C)
-    ser = serial.Serial('/dev/cu.usbmodem1411', 9600)
+    ser = serial.Serial(util.get_arduino_port(), 9600)
 
     while True:
         line = ser.readline().strip()
@@ -62,7 +63,6 @@ def loop():
             audio_controller.loop_next_wav_by_name(actions[str(result_array)])
              
             
-
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
     loop()
