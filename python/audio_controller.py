@@ -4,6 +4,8 @@ import sys
 import wave
 from threading import Thread
 from time import sleep
+import numpy
+import struct
 
 # http://playground.arduino.cc/Interfacing/Python
 
@@ -18,6 +20,8 @@ ZPLANE_PAD = "Zplane_Pad.wav"
 
 VOLUME_STEP = 0.001
 
+data = None
+
 
 # Instantiate PyAudio.
 p = pyaudio.PyAudio()
@@ -30,6 +34,7 @@ CHUNK_SIZE = 1024
 
 def loop_wav(wav_filename, chunk_size=CHUNK_SIZE):
     global is_sample_tapering
+    global data
 
     try:
         logging.info('Trying to play file ' + wav_filename)
@@ -60,8 +65,10 @@ def loop_wav(wav_filename, chunk_size=CHUNK_SIZE):
     logging.debug("getting data")
     
     volume = 0.0
+    data = wf.readframes(CHUNK_SIZE)
     
     def play_moment():
+        global data
         arr = volume * numpy.fromstring(data, numpy.int16) 
         data = struct.pack('h'*len(arr), *arr)
 
@@ -74,9 +81,6 @@ def loop_wav(wav_filename, chunk_size=CHUNK_SIZE):
             wf.rewind()
             data = wf.readframes(CHUNK_SIZE)
     
-
-    # PLAYBACK LOOP
-    data = wf.readframes(CHUNK_SIZE)
     while should_play:
         if volume < 1:
             volume += VOLUME_STEP
