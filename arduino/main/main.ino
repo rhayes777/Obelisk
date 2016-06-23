@@ -1,54 +1,36 @@
+#define LEDPin 13 // Onboard LED
 
-int ledPin = 13;                
-int inputPins[] = {2, 3, 4};
-int pirStates[3] = {};
-int numberOfPins = 0;
- 
+int trigPins[] = {2,3,4};
+int echoPins[] = {5,6,7};
+
+int numberOfSensors;
+
+long duration, distance; // Duration used to calculate distance
+
 void setup() {
-  pinMode(ledPin, OUTPUT);    
-  numberOfPins = sizeof(inputPins)/sizeof(int);
-  
-  for (int n = 0; n < numberOfPins; n++) {
-    pinMode(inputPins[n], INPUT);
-  }
-  
-  Serial.begin(9600);
+    Serial.begin(9600);
+    numberOfSensors = sizeof(trigPins)/sizeof(int);
+
+ for (int n; n < numberOfSensors; n++) {
+    pinMode(trigPins[n], OUTPUT);
+    pinMode(echoPins[n], INPUT);
+ }
+ pinMode(LEDPin, OUTPUT); // Use LED indicator (if required)
 }
 
-int readPin(int pin, int state, String title) {
-  int val = digitalRead(pin);  
-  if (val == HIGH) {           
-    digitalWrite(ledPin, HIGH); 
-    if (state == LOW) {
-      state = HIGH;
-    }
-  } else {
-    digitalWrite(ledPin, LOW);
-    if (state == HIGH){
-      state = LOW;
-    }
-  }
-  return state;
-}
- 
-void loop(){
+void loop() {
+  String result = "[";
+  for (int n; n < numberOfSensors; n++) {
+    int trigPin = trigPins[n];
+    int echoPin = echoPins[n];
+    digitalWrite(trigPin, LOW); 
+    delayMicroseconds(2); 
 
-  bool isChangedState = false;
-
-  String stateString = "[";
-
-  for (int n = 0; n < numberOfPins; n++) {
-    int oldState = pirStates[n];
-    int newState = readPin(inputPins[n], oldState, String(n));
-    pirStates[n] = newState;
-    String delimeter = n < numberOfPins - 1 ? "," : "]";
-    stateString = stateString + String(newState) + delimeter;
-    if (newState != oldState) {
-      isChangedState = true;
-    }
+    digitalWrite(trigPin, HIGH);
+    delayMicroseconds(10); 
+    
+    digitalWrite(trigPin, LOW);
+    result += String(pulseIn(echoPin, HIGH)) + (n < numberOfSensors - 1 ? "," : "]");
   }
-  
-  if (isChangedState) {
-     Serial.println(stateString);
-  }
+  Serial.println(result); 
 }
