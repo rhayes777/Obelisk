@@ -18,7 +18,7 @@ SYTHEX_PAD = "Synthex_Pad.wav"
 WAVEDRIFT_PAD_C = "Wavedrift_Pad_C.wav"
 ZPLANE_PAD = "Zplane_Pad.wav"
 
-VOLUME_STEP = 0.001
+VOLUME_STEP = 0.1
 
 data = None
 
@@ -82,7 +82,7 @@ def loop_wav(wav_filename, chunk_size=CHUNK_SIZE):
             data = wf.readframes(CHUNK_SIZE)
     
     while should_play:
-        if volume < 1:
+        if volume + VOLUME_STEP <= 1:
             volume += VOLUME_STEP
         play_moment()
     
