@@ -46,12 +46,7 @@ def loop():
 
         average_array = INPUT_ARRAY_SIZE * [0]
         
-        print average_array
-        print sample_arrays
-        
         for sample in sample_arrays:
-            print average_array
-            print sample
             average_array = map(add, average_array, sample)
             
         average_array = map(lambda item: item / SAMPLE_SIZE, average_array)
@@ -59,6 +54,8 @@ def loop():
         logging.debug("average_array = {}".format(average_array))
 
         result_array = map(lambda result: 1 if result < UPPER_LIMIT else 0, average_array)
+        
+        logging.debug("result_array = {}".format(result_array))
 
         if result_array != previous_result_array:
             previous_result_array = result_array
