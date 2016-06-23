@@ -9,11 +9,11 @@ import util
 
 # http://playground.arduino.cc/Interfacing/Python
 
-UPPER_LIMIT = 5000
+UPPER_LIMIT = 6000
 MIDDLE_LIMIT = 1000
 MARGIN = 1000
 
-SAMPLE_SIZE = 5
+SAMPLE_SIZE = 10
 
 INPUT_ARRAY_SIZE = 3
 
