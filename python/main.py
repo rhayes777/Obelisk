@@ -9,7 +9,7 @@ import util
 
 # http://playground.arduino.cc/Interfacing/Python
 
-UPPER_LIMIT = 6000
+UPPER_LIMIT = 7500
 MIDDLE_LIMIT = 1000
 MARGIN = 1000
 
