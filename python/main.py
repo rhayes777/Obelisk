@@ -9,9 +9,8 @@ import util
 
 # http://playground.arduino.cc/Interfacing/Python
 
-UPPER_LIMIT = 7500
-MIDDLE_LIMIT = 1000
-MARGIN = 1000
+MAX_DISTANCE = 2000
+TIME_DISTANCE_CONVERSION_FACTOR = 58.138
 
 SAMPLE_SIZE = 10
 
@@ -23,21 +22,22 @@ for n in range(0, SAMPLE_SIZE):
     
 print sample_arrays
 
-actions = {str([0, 0, 0]): audio_controller.ACRO_PAD_C,
-           str([1, 0, 0]): audio_controller.WAVEDRIFT_PAD_C,
-           str([0, 1, 0]): audio_controller.LODE_PAD,
-           str([0, 0, 1]): audio_controller.SPACEBEE_PAD,
-           str([1, 1, 0]): audio_controller.SPOOKT_PAD_C,
-           str([0, 1, 1]): audio_controller.SYTHEX_PAD,
-           str([1, 0, 1]): audio_controller.WAVEDRIFT_PAD_C,
-           str([1, 1, 1]): audio_controller.ZPLANE_PAD
-           }
+           
+audio_samples = [audio_controller.ACRO_PAD_C,
+                    audio_controller.WAVEDRIFT_PAD_C,
+                    audio_controller.LODE_PAD,
+                    audio_controller.SPACEBEE_PAD,
+                    audio_controller.SPOOKT_PAD_C,
+                    audio_controller.SYTHEX_PAD]
 
 
 def loop():
     previous_result_array = INPUT_ARRAY_SIZE * [0]
     audio_controller.loop_next_wav_by_name(audio_controller.ACRO_PAD_C)
     ser = serial.Serial(util.get_arduino_port(), 9600)
+    
+    for n in range(0, INPUT_ARRAY_SIZE):
+        audio_controller.loop_wav_on_new_thread(audio_samples[n])
 
     while True:
         line = ser.readline().strip()
@@ -51,20 +51,20 @@ def loop():
         for sample in sample_arrays:
             average_array = map(add, average_array, sample)
             
-        average_array = map(lambda item: item / SAMPLE_SIZE, average_array)
+        average_array = map(lambda value: value / (SAMPLE_SIZE * TIME_DISTANCE_CONVERSION_FACTOR) , average_array)
 
         logging.debug("average_array = {}".format(average_array))
 
         for n in range(0, INPUT_ARRAY_SIZE):
-            result_array = 1 if average_array[n] < UPPER_LIMIT + previous_result_array[n] * MARGIN else 0
-        
-        result_array = map(lambda result: 1 if result < UPPER_LIMIT else 0, average_array)
-        
-        logging.debug("result_array = {}".format(result_array))
-
-        if result_array != previous_result_array:
-            previous_result_array = result_array
-            audio_controller.loop_next_wav_by_name(actions[str(result_array)])
+            distance = average_array[n]
+            if distance < 0:
+                distance = 0
+            if distance > MAX_DISTANCE:
+                distance = MAX_DISTANCE
+            volume = 1 - distance / MAX_DISTANCE
+            print "sensor {} at {}".format(n, distance)
+            queue = audio_controller.queues[n]
+            queue.put(volume)
              
             
 if __name__ == "__main__":
