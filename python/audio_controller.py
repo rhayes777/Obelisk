@@ -6,6 +6,7 @@ from threading import Thread
 from time import sleep
 import numpy
 import struct
+from Queue import Queue
 
 # http://playground.arduino.cc/Interfacing/Python
 
@@ -29,7 +30,7 @@ queues = []
 
 CHUNK_SIZE = 1024
 
-class loop:
+class Loop:
     
     def __init__(self, wav_filename, chunk_size=CHUNK_SIZE, volume=0.0):
         self.wav_filename = wav_filename
@@ -37,7 +38,7 @@ class loop:
         self.volume = volume
         self.queue = Queue()
 
-    def start():
+    def start(self):
     
         try:
             logging.info('Trying to play file ' + self.wav_filename)
@@ -66,12 +67,13 @@ class loop:
         logging.debug("getting data")
         
         data = wf.readframes(self.chunk_size)
-            
+        logging.debug("data got")
         
         while should_play:
-            if !self.queue.empty():
+            if not self.queue.empty():
                 self.volume = self.queue.get()
-        
+                
+#             print "volume = {}".format(self.volume)
             arr = self.volume * numpy.fromstring(data, numpy.int16) 
             data = struct.pack('h'*len(arr), *arr)
     
@@ -82,7 +84,7 @@ class loop:
             if data == '':  # If file is over then rewind.
     
                 wf.rewind()
-                data = wf.readframes(chunk_size)
+                data = wf.readframes(self.chunk_size)
         
                     
         logging.debug("sample finished")
@@ -99,6 +101,10 @@ def loop_wav_on_new_thread(name):
     t.start()
     
 def loop_wav(name):
-    loop = loop(name)
-    loop.start()
+    loop = Loop(name)
+    print "appending queue to queues"
     queues.append(loop.queue)
+    print "new size = {}".format(len(queues))
+    loop.start()
+    print "loop started"
+
