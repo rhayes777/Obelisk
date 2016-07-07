@@ -24,6 +24,8 @@ p = pyaudio.PyAudio()
 should_play = True
 is_sample_tapering = True
 
+queues = []
+
 
 CHUNK_SIZE = 1024
 
@@ -67,6 +69,9 @@ class loop:
             
         
         while should_play:
+            if !self.queue.empty():
+                self.volume = self.queue.get()
+        
             arr = self.volume * numpy.fromstring(data, numpy.int16) 
             data = struct.pack('h'*len(arr), *arr)
     
@@ -96,3 +101,4 @@ def loop_wav_on_new_thread(name):
 def loop_wav(name):
     loop = loop(name)
     loop.start()
+    queues.append(loop.queue)
