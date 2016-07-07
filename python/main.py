@@ -18,7 +18,7 @@ INPUT_ARRAY_SIZE = 3
 
 sample_arrays = []
 for n in range(0, SAMPLE_SIZE):
-    sample_arrays.append(INPUT_ARRAY_SIZE * [2*UPPER_LIMIT])
+    sample_arrays.append(INPUT_ARRAY_SIZE * [MAX_DISTANCE])
     
 print sample_arrays
 
@@ -33,15 +33,16 @@ audio_samples = [audio_controller.ACRO_PAD_C,
 
 def loop():
     previous_result_array = INPUT_ARRAY_SIZE * [0]
-    audio_controller.loop_next_wav_by_name(audio_controller.ACRO_PAD_C)
     ser = serial.Serial(util.get_arduino_port(), 9600)
     
     for n in range(0, INPUT_ARRAY_SIZE):
+        print "Playing {}".format(audio_samples[n])
         audio_controller.loop_wav_on_new_thread(audio_samples[n])
 
     while True:
         line = ser.readline().strip()
         input_array = ast.literal_eval(line)
+        print input_array
         
         sample_arrays.pop(0)
         sample_arrays.append(input_array)
