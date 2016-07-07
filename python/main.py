@@ -9,7 +9,7 @@ import util
 
 # http://playground.arduino.cc/Interfacing/Python
 
-MAX_DISTANCE = 2000
+MAX_DISTANCE = 200
 TIME_DISTANCE_CONVERSION_FACTOR = 58.138
 
 SAMPLE_SIZE = 10
