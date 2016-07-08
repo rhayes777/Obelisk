@@ -19,6 +19,15 @@ SYTHEX_PAD = "Synthex_Pad.wav"
 WAVEDRIFT_PAD_C = "Wavedrift_Pad_C.wav"
 ZPLANE_PAD = "Zplane_Pad.wav"
 
+A_FAR_Master  = "A_FAR_Master"
+A_NEAR_Master = "A_NEAR_Master"
+B_FAR_Master  = "B_FAR_Master"
+B_NEAR_Master = "B_NEAR_Master"
+C_FAR_Master  = "C_FAR_Master"
+C_NEAR_Master = "C_NEAR_Master"
+D_FAR_Master  = "D_FAR_Master"
+D_NEAR_Master = "D_NEAR_Master"
+
 
 # Instantiate PyAudio.
 p = pyaudio.PyAudio()
@@ -73,7 +82,6 @@ class Loop:
             if not self.queue.empty():
                 self.volume = self.queue.get()
                 
-#             print "volume = {}".format(self.volume)
             arr = self.volume * numpy.fromstring(data, numpy.int16) 
             data = struct.pack('h'*len(arr), *arr)
     
