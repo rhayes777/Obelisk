@@ -19,14 +19,14 @@ SYTHEX_PAD = "Synthex_Pad.wav"
 WAVEDRIFT_PAD_C = "Wavedrift_Pad_C.wav"
 ZPLANE_PAD = "Zplane_Pad.wav"
 
-A_FAR_Master  = "A_FAR_Master"
-A_NEAR_Master = "A_NEAR_Master"
-B_FAR_Master  = "B_FAR_Master"
-B_NEAR_Master = "B_NEAR_Master"
-C_FAR_Master  = "C_FAR_Master"
-C_NEAR_Master = "C_NEAR_Master"
-D_FAR_Master  = "D_FAR_Master"
-D_NEAR_Master = "D_NEAR_Master"
+A_FAR_Master  = "A_FAR_Master.wav"
+A_NEAR_Master = "A_NEAR_Master.wav"
+B_FAR_Master  = "B_FAR_Master.wav"
+B_NEAR_Master = "B_NEAR_Master.wav"
+C_FAR_Master  = "C_FAR_Master.wav"
+C_NEAR_Master = "C_NEAR_Master.wav"
+D_FAR_Master  = "D_FAR_Master.wav"
+D_NEAR_Master = "D_NEAR_Master.wav"
 
 
 # Instantiate PyAudio.
@@ -41,7 +41,7 @@ CHUNK_SIZE = 1024
 
 class Loop:
     
-    def __init__(self, wav_filename, chunk_size=CHUNK_SIZE, volume=0.0):
+    def __init__(self, wav_filename, chunk_size=CHUNK_SIZE, volume=0.5):
         self.wav_filename = wav_filename
         self.chunk_size=chunk_size
         self.volume = volume
