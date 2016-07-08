@@ -24,19 +24,23 @@ for n in range(0, SAMPLE_SIZE):
 print sample_arrays
 
            
-audio_samples = [audio_controller.ACRO_PAD_C,
-                    audio_controller.WAVEDRIFT_PAD_C,
-                    audio_controller.LODE_PAD,
-                    audio_controller.SPACEBEE_PAD,
-                    audio_controller.SPOOKT_PAD_C,
-                    audio_controller.SYTHEX_PAD]
+audio_samples = [
+                    audio_controller.A_FAR_Master,
+                    audio_controller.A_NEAR_Master,
+                    audio_controller.B_FAR_Master,
+                    audio_controller.B_NEAR_Master,
+                    audio_controller.C_FAR_Master,
+                    audio_controller.C_NEAR_Master,
+                    audio_controller.D_FAR_Master,
+                    audio_controller.D_NEAR_Master
+                    ]
 
 
 def loop():
     previous_result_array = INPUT_ARRAY_SIZE * [0]
     ser = serial.Serial(util.get_arduino_port(), 9600)
     
-    for n in range(0, INPUT_ARRAY_SIZE):
+    for n in range(0, 2 * INPUT_ARRAY_SIZE):
         print "Playing {}".format(audio_samples[n])
         audio_controller.loop_wav_on_new_thread(audio_samples[n])
 
@@ -69,7 +73,7 @@ def loop():
                 volume_near = 1 - distance / CLOSE_DISTANCE
             print "sensor {} at {}".format(n, distance)
             audio_controller.queues[n].put(volume_near)
-            audio_controller.queues[n + SAMPLE_SIZE].put(volume_far)
+            audio_controller.queues[n + INPUT_ARRAY_SIZE].put(volume_far)
 
              
             
