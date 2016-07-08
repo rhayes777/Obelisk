@@ -10,6 +10,7 @@ import util
 # http://playground.arduino.cc/Interfacing/Python
 
 MAX_DISTANCE = 200
+CLOSE_DISTANCE = 100
 TIME_DISTANCE_CONVERSION_FACTOR = 58.138
 
 SAMPLE_SIZE = 100
@@ -62,10 +63,14 @@ def loop():
                 distance = 0
             if distance > MAX_DISTANCE:
                 distance = MAX_DISTANCE
-            volume = 1 - distance / MAX_DISTANCE
+            volume_far = 1 - distance / MAX_DISTANCE
+            volume_near = 0
+            if distance < CLOSE_DISTANCE:
+                volume_near = 1 - distance / CLOSE_DISTANCE
             print "sensor {} at {}".format(n, distance)
-            queue = audio_controller.queues[n]
-            queue.put(volume)
+            audio_controller.queues[n].put(volume_near)
+            audio_controller.queues[n + SAMPLE_SIZE].put(volume_far)
+
              
             
 if __name__ == "__main__":
