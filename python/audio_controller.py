@@ -41,7 +41,7 @@ CHUNK_SIZE = 1024
 
 class Loop:
     
-    def __init__(self, wav_filename, chunk_size=CHUNK_SIZE, volume=0.5):
+    def __init__(self, wav_filename, chunk_size=CHUNK_SIZE, volume=1):
         self.wav_filename = wav_filename
         self.chunk_size=chunk_size
         self.volume = volume
