@@ -79,5 +79,5 @@ def loop():
             
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
-#     loop()
-    audio_controller.loop_wav_on_new_thread("A_FAR_Master_converted.wav")
+    loop()
+#     audio_controller.loop_wav_on_new_thread("A_FAR_Master_converted.wav")
