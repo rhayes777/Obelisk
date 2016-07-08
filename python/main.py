@@ -38,7 +38,7 @@ audio_samples = [
 
 def loop():
     previous_result_array = INPUT_ARRAY_SIZE * [0]
-    ser = serial.Serial(util.get_arduino_port(), 9600)
+#     ser = serial.Serial(util.get_arduino_port(), 9600)
     
     for n in range(0, 2 * INPUT_ARRAY_SIZE):
         print "Playing {}".format(audio_samples[n])
@@ -79,4 +79,5 @@ def loop():
             
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
-    loop()
+#     loop()
+    audio_controller.loop_wav_on_new_thread("A_FAR_Master_converted.wav")
