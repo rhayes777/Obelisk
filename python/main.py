@@ -80,7 +80,6 @@ def loop():
     while True:
         line = ser.readline().strip()
         input_array = milliseconds_to_meters_array(ast.literal_eval(line))
-        print input_array
 
         if should_normalise:
             logging.info("normalising")
