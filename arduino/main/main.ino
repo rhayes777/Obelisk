@@ -1,7 +1,7 @@
 #define LEDPin 13 // Onboard LED
 
-int trigPins[] = {2,3,4};
-int echoPins[] = {5,6,7};
+int trigPins[] = {2,3,4,8};
+int echoPins[] = {5,6,7,9};
 
 int numberOfSensors;
 
@@ -20,6 +20,7 @@ void setup() {
 
 void loop() {
   String result = "[";
+  int sum = -1;
   for (int n; n < numberOfSensors; n++) {
     int trigPin = trigPins[n];
     int echoPin = echoPins[n];
@@ -30,7 +31,16 @@ void loop() {
     delayMicroseconds(10); 
     
     digitalWrite(trigPin, LOW);
-    result += String(pulseIn(echoPin, HIGH)) + (n < numberOfSensors - 1 ? "," : "]");
+    int input = pulseIn(echoPin, HIGH);
+    if (sum == -1) {
+      sum = input;
+    }
+    else {
+      sum += input;
+      int avg = sum / 2;
+      sum = -1;
+      result += String(avg) + (n < numberOfSensors - 1 ? "," : "]");
+    }
   }
   Serial.println(result); 
 }
