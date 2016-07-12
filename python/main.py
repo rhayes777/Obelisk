@@ -42,12 +42,12 @@ last_sample_array = None
 should_normalise = True
 
 
-def miliseconds_to_meters(value):
+def milliseconds_to_meters(value):
     return value / TIME_DISTANCE_CONVERSION_FACTOR
 
 
-def miliseconds_to_meters_array(array):
-    return map(lambda value: miliseconds_to_meters(value), array)
+def milliseconds_to_meters_array(array):
+    return map(lambda value: milliseconds_to_meters(value), array)
 
 
 def normalise(new_sample_array):
@@ -65,9 +65,9 @@ def normalise(new_sample_array):
                     max_distance_array[n] = new_sample_array[n]
 
             should_normalise = False
-    print "last sample being set to {} with type {}".format(new_sample_array, type(new_sample_array))
+
     last_sample_array = new_sample_array
-    print "normalised"
+    logging.info("normalised")
 
 
 def loop():
@@ -79,13 +79,12 @@ def loop():
 
     while True:
         line = ser.readline().strip()
-        input_array = miliseconds_to_meters_array(ast.literal_eval(line))
+        input_array = milliseconds_to_meters_array(ast.literal_eval(line))
         print input_array
 
         if should_normalise:
-            print "normalising"
+            logging.info("normalising")
             normalise(input_array)
-            print max_distance_array
             continue
 
         sample_arrays.pop(0)
@@ -111,12 +110,12 @@ def loop():
             volume_near = 0
             if distance < CLOSE_DISTANCE:
                 volume_near = 1 - distance / CLOSE_DISTANCE
-            print "sensor {} at {}".format(n, distance)
+            logging.info("sensor {} at {}".format(n, distance))
             audio_controller.queues[2 * n].put(volume_near)
             audio_controller.queues[2 * n + 1].put(volume_far)
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.DEBUG)
+    logging.basicConfig(level=logging.INFO)
     loop()
 # audio_controller.loop_wav_on_new_thread("A_FAR_Master_converted.wav")
