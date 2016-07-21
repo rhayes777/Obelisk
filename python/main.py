@@ -15,7 +15,7 @@ TIME_DISTANCE_CONVERSION_FACTOR = 58.138
 
 SAMPLE_SIZE = 100
 
-INPUT_ARRAY_SIZE = 2
+INPUT_ARRAY_SIZE = 4
 
 NORMALISING_THRESHOLD = 0.1
 
@@ -71,15 +71,18 @@ def normalise(new_sample_array):
 
 
 def loop():
-    ser = serial.Serial(util.get_arduino_port(), 9600)
+    ports = util.get_arduino_ports()
+    ser1 = serial.Serial(ports[0], 9600)
+    ser2 = serial.Serial(ports[1], 9600)
 
     for n in range(0, 2 * INPUT_ARRAY_SIZE):
         print "Playing {}".format(audio_samples[n])
         audio_controller.loop_wav_on_new_thread(audio_samples[n])
 
     while True:
-        line = ser.readline().strip()
-        input_array = milliseconds_to_meters_array(ast.literal_eval(line))
+        line = ast.literal_eval(ser1.readline().strip())
+        line.extend(ast.literal_eval(ser2.readline().strip()))
+        input_array = milliseconds_to_meters_array(line)
 
         if should_normalise:
             logging.info("normalising")

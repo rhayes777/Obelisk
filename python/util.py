@@ -31,18 +31,18 @@ def serial_ports():
     return result
 
 # Looks at all ports and grabs the one that looks like arduino. Could break if other ports available. If it prints out more than one tty.usbmodem then you might need to add the name of the port manually
-def get_arduino_port():
+def get_arduino_ports():
     all_ports = serial_ports()
     print all_ports
     tty_ports = filter(lambda port_name: "tty.usbmodem" in port_name, all_ports)
-    if len(tty_ports) > 1:
+    if len(tty_ports) > 2:
         print "Too many ports found! Try manually entering them from this list:"
         print tty_ports
         assert False
     if len(tty_ports) == 0:
         print "No ports found! Is arduino plugged in?"
         assert False
-    return tty_ports[0]
+    return tty_ports
     
 if __name__=="__main__":
     print get_arduino_port()
