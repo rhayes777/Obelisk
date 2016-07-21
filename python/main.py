@@ -67,7 +67,6 @@ def normalise(new_sample_array):
             should_normalise = False
 
     last_sample_array = new_sample_array
-    logging.info("normalised")
 
 
 def loop():
@@ -88,6 +87,7 @@ def loop():
             logging.info("normalising")
             normalise(input_array)
             continue
+        logging.info("normalised")
 
         sample_arrays.pop(0)
         sample_arrays.append(input_array)
