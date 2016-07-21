@@ -1,7 +1,7 @@
 #define LEDPin 13 // Onboard LED
 
-int trigPins[] = {2,3,4};
-int echoPins[] = {5,6,7};
+int trigPins[] = {2,3,4,9};
+int echoPins[] = {5,6,7,8};
 
 int numberOfSensors;
 
