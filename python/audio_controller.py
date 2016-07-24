@@ -39,6 +39,8 @@ queues = []
 
 CHUNK_SIZE = 1024
 
+# logging.basicConfig(level=logging.DEBUG)
+
 class Loop:
     
     def __init__(self, wav_filename, chunk_size=CHUNK_SIZE, volume=1):
@@ -50,7 +52,7 @@ class Loop:
     def start(self):
     
         try:
-            logging.info('Trying to play file ' + self.wav_filename)
+            self.log('Trying to play file ' + self.wav_filename)
             wf = wave.open("samples/" + self.wav_filename, 'rb')
         except IOError as ioe:
             sys.stderr.write('IOError on file ' + self.wav_filename + '\n' + \
@@ -61,11 +63,11 @@ class Loop:
                              str(eofe) + '. Skipping.\n')
             return
     
-        logging.debug("framerate = {}".format(wf.getframerate()))
-        logging.debug("sampwidth = {}".format(wf.getsampwidth()))
-        logging.debug("nchannels = {}".format(wf.getnchannels()))
+        self.log("framerate = {}".format(wf.getframerate()))
+        self.log("sampwidth = {}".format(wf.getsampwidth()))
+        self.log("nchannels = {}".format(wf.getnchannels()))
         
-        logging.debug("opening stream")
+        self.log("opening stream")
     
         # Open stream.
         stream = p.open(format=p.get_format_from_width(wf.getsampwidth()),
@@ -73,10 +75,10 @@ class Loop:
                         rate=wf.getframerate(),
                         output=True)
         
-        logging.debug("getting data")
+        self.log("getting data")
         
         data = wf.readframes(self.chunk_size)
-        logging.debug("data got")
+        self.log("data got")
         
         while should_play:
             if not self.queue.empty():
@@ -95,13 +97,16 @@ class Loop:
                 data = wf.readframes(self.chunk_size)
         
                     
-        logging.debug("sample finished")
+        self.log("sample finished")
     
         # Stop stream.
-        logging.debug("stopping stream")
+        self.log("stopping stream")
         stream.stop_stream()
-        logging.debug("closing stream")
+        self.log("closing stream")
         stream.close()
+        
+    def log(self, message):
+        logging.debug("{}: {}".format(self.wav_filename, message))    
 
 
 def loop_wav_on_new_thread(name):
