@@ -79,7 +79,9 @@ def loop():
         audio_controller.loop_wav_on_new_thread(audio_samples[n])
 
     while True:
+        ser1.write("1")
         line = ast.literal_eval(ser1.readline().strip())
+        ser2.write("1")
         line.extend(ast.literal_eval(ser2.readline().strip()))
         input_array = milliseconds_to_meters_array(line)
 

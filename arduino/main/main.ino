@@ -19,6 +19,12 @@ void setup() {
 }
 
 void loop() {
+  if (Serial.available()) {
+    Serial.println(recordDataString()); 
+  }
+}
+
+String recordDataString() {
   String result = "[";
   int sum = -1;
   for (int n; n < numberOfSensors; n++) {
@@ -42,5 +48,6 @@ void loop() {
       result += String(avg) + (n < numberOfSensors - 1 ? "," : "]");
     }
   }
-  Serial.println(result); 
+  return result;
 }
+
