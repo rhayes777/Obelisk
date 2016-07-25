@@ -39,7 +39,7 @@ void serialEvent() {
       if (msg >= 48) {
         lightModes[n++] = msg - 48;
       }
-      if (msg == 10) {
+      else {
         Serial.println(recordDataString());
       }
   }
