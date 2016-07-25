@@ -44,10 +44,11 @@ VOLUME_DECAY_RATE = 0.01
 
 class Loop:
     
-    def __init__(self, wav_filename, chunk_size=CHUNK_SIZE, volume=1):
+    def __init__(self, wav_filename, no_of_queues_required, chunk_size=CHUNK_SIZE, volume=1):
         self.wav_filename = wav_filename
         self.chunk_size=chunk_size
         self.volume = volume
+        self.no_of_queues_required = no_of_queues_required
         self.queue = Queue()
 
     def start(self):
@@ -80,6 +81,9 @@ class Loop:
         
         data = wf.readframes(self.chunk_size)
         self.log("data got")
+        
+        while len(queues) < self.no_of_queues_required:
+            pass
         
         while should_play:
             if not self.queue.empty():
@@ -116,12 +120,12 @@ class Loop:
         logging.debug("{}: {}".format(self.wav_filename, message))    
 
 
-def loop_wav_on_new_thread(name):
-    t = Thread(target=loop_wav, args=(name,))
+def loop_wav_on_new_thread(name, no_of_queues_required):
+    t = Thread(target=loop_wav, args=(name, no_of_queues_required, ))
     t.start()
     
-def loop_wav(name):
-    loop = Loop(name)
+def loop_wav(name, no_of_queues_required):
+    loop = Loop(name, no_of_queues_required)
     print "appending queue to queues"
     queues.append(loop.queue)
     print "new size = {}".format(len(queues))

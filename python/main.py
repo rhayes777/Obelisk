@@ -80,7 +80,7 @@ def loop():
 
     for n in range(0, 2 * INPUT_ARRAY_SIZE):
         print "Playing {}".format(audio_samples[n])
-        audio_controller.loop_wav_on_new_thread(audio_samples[n])
+        audio_controller.loop_wav_on_new_thread(audio_samples[n], INPUT_ARRAY_SIZE)
 
     print "starting read loop"
     while True:
