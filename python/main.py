@@ -17,7 +17,9 @@ SAMPLE_SIZE = 100
 
 INPUT_ARRAY_SIZE = 4
 
-NORMALISING_THRESHOLD = 0.1
+NORMALISING_THRESHOLD = 0.01
+
+test_array = INPUT_ARRAY_SIZE * [False]
 
 max_distance_array = INPUT_ARRAY_SIZE * [MAX_DISTANCE]
 
@@ -54,16 +56,18 @@ def normalise(new_sample_array):
     global last_sample_array
     global should_normalise
     global max_distance_array
+    global test_array
 
     if last_sample_array is not None:
-        test_array = [abs(new_sample - last_sample) < NORMALISING_THRESHOLD for new_sample, last_sample in
-                      zip(new_sample_array, last_sample_array)]
+        for n in range(0, INPUT_ARRAY_SIZE):
+            if not test_array[n]:
+                if abs(new_sample_array[n] - last_sample_array[n]) < NORMALISING_THRESHOLD:
+                    test_array[n] = True
+                    if new_sample_array[n] < MAX_DISTANCE:
+                        max_distance_array[n] = new_sample_array[n]
+                    
         print test_array
         if not False in test_array:
-            for n in range(0, len(new_sample_array)):
-                if new_sample_array[n] < MAX_DISTANCE:
-                    max_distance_array[n] = new_sample_array[n]
-
             should_normalise = False
 
     last_sample_array = new_sample_array
