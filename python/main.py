@@ -61,7 +61,7 @@ def normalise(new_sample_array):
     if last_sample_array is not None:
         for n in range(0, INPUT_ARRAY_SIZE):
             if not test_array[n]:
-                if abs(new_sample_array[n] - last_sample_array[n]) < NORMALISING_THRESHOLD:
+                if abs(new_sample_array[n] - last_sample_array[n]) < NORMALISING_THRESHOLD or (new_sample_array[n] > MAX_DISTANCE and last_sample_array[n] > MAX_DISTANCE):
                     test_array[n] = True
                     if new_sample_array[n] < MAX_DISTANCE:
                         max_distance_array[n] = new_sample_array[n]
@@ -110,6 +110,8 @@ def loop():
             average_array = map(lambda value: value / SAMPLE_SIZE, average_array)
     
             logging.debug("average_array = {}".format(average_array))
+            
+            volumes = INPUT_ARRAY_SIZE * [0]
     
             for n in range(0, INPUT_ARRAY_SIZE):
                 max_distance = max_distance_array[n]
@@ -125,6 +127,10 @@ def loop():
                 logging.info("sensor {} at {}".format(n, distance))
                 audio_controller.queues[2 * n].put(volume_near)
                 audio_controller.queues[2 * n + 1].put(volume_far)
+                volumes[n] = volume_far
+            
+            arduino1.set_light_modes_by_volumes(volumes[:2])
+            arduino2.set_light_modes_by_volumes(volumes[-2:])
 
 
 if __name__ == "__main__":
