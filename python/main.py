@@ -1,9 +1,9 @@
 import logging
-import serial
-import ast
+
 import audio_controller
 from operator import add
 import util
+from arduino import Arduino
 
 # logging.basicConfig(level=logging.INFO)
 
@@ -71,52 +71,58 @@ def normalise(new_sample_array):
 
 def loop():
     ports = util.get_arduino_ports()
-    ser1 = serial.Serial(ports[0], 9600)
-    ser2 = serial.Serial(ports[1], 9600)
+    arduino1 = Arduino(ports[0])
+    arduino2 = Arduino(ports[1])
 
-    for n in range(0, 2 * INPUT_ARRAY_SIZE):
-        print "Playing {}".format(audio_samples[n])
-        audio_controller.loop_wav_on_new_thread(audio_samples[n])
+#     for n in range(0, 2 * INPUT_ARRAY_SIZE):
+#         print "Playing {}".format(audio_samples[n])
+#         audio_controller.loop_wav_on_new_thread(audio_samples[n])
 
+    print "starting read loop"
     while True:
-        ser1.write("1")
-        line = ast.literal_eval(ser1.readline().strip())
-        ser2.write("1")
-        line.extend(ast.literal_eval(ser2.readline().strip()))
-        input_array = milliseconds_to_meters_array(line)
+        
+        line1 = arduino1.request_array()
+        line2 = arduino2.request_array()
 
-        if should_normalise:
-            logging.info("normalising")
-            normalise(input_array)
-            continue
-        logging.info("normalised")
-
-        sample_arrays.pop(0)
-        sample_arrays.append(input_array)
-
-        average_array = INPUT_ARRAY_SIZE * [0]
-
-        for sample in sample_arrays:
-            average_array = map(add, average_array, sample)
-
-        average_array = map(lambda value: value / SAMPLE_SIZE, average_array)
-
-        logging.debug("average_array = {}".format(average_array))
-
-        for n in range(0, INPUT_ARRAY_SIZE):
-            max_distance = max_distance_array[n]
-            distance = average_array[n]
-            if distance < 0:
-                distance = 0
-            if distance > max_distance:
-                distance = max_distance
-            volume_far = 1 - distance / max_distance
-            volume_near = 0
-            if distance < CLOSE_DISTANCE:
-                volume_near = 1 - distance / CLOSE_DISTANCE
-            logging.info("sensor {} at {}".format(n, distance))
-            audio_controller.queues[2 * n].put(volume_near)
-            audio_controller.queues[2 * n + 1].put(volume_far)
+        if line1 and line2:
+            line1.extend(line2)
+            line = line1
+            print line
+    
+            input_array = milliseconds_to_meters_array(line)
+    
+            if should_normalise:
+                logging.info("normalising")
+                normalise(input_array)
+                continue
+            logging.info("normalised")
+    
+            sample_arrays.pop(0)
+            sample_arrays.append(input_array)
+    
+            average_array = INPUT_ARRAY_SIZE * [0]
+    
+            for sample in sample_arrays:
+                average_array = map(add, average_array, sample)
+    
+            average_array = map(lambda value: value / SAMPLE_SIZE, average_array)
+    
+            logging.debug("average_array = {}".format(average_array))
+    
+            for n in range(0, INPUT_ARRAY_SIZE):
+                max_distance = max_distance_array[n]
+                distance = average_array[n]
+                if distance < 0:
+                    distance = 0
+                if distance > max_distance:
+                    distance = max_distance
+                volume_far = 1 - distance / max_distance
+                volume_near = 0
+                if distance < CLOSE_DISTANCE:
+                    volume_near = 1 - distance / CLOSE_DISTANCE
+                logging.info("sensor {} at {}".format(n, distance))
+                audio_controller.queues[2 * n].put(volume_near)
+                audio_controller.queues[2 * n + 1].put(volume_far)
 
 
 if __name__ == "__main__":
