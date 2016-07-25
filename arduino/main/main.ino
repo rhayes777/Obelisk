@@ -3,12 +3,16 @@
 int trigPins[] = {2,3,4,5};
 int echoPins[] = {6,7,8,9};
 
+String inputString = "";         // a string to hold incoming data
+boolean stringComplete = false;  // whether the string is complete
+
 int numberOfSensors;
 
 long duration, distance; // Duration used to calculate distance
 
 void setup() {
     Serial.begin(9600);
+    inputString.reserve(200);
     numberOfSensors = sizeof(trigPins)/sizeof(int);
 
  for (int n; n < numberOfSensors; n++) {
@@ -19,9 +23,36 @@ void setup() {
 }
 
 void loop() {
-  if (Serial.available()) {
-    Serial.println(recordDataString()); 
+
+  if (stringComplete) {
+//    Serial.println(recordDataString()); 
+    while (true) {
+       Serial.println(inputString); 
+    }
+    stringComplete = false;
   }
+
+}
+
+
+void serialEvent() {
+  while (Serial.available()) {
+    Serial.read();
+  }
+       
+  Serial.println(recordDataString());
+    
+//  while (Serial.available()) {
+//    // get the new byte:
+//    char inChar = (char)Serial.read();
+//    // add it to the inputString:
+//    inputString += inChar;
+//    // if the incoming character is a newline, set a flag
+//    // so the main loop can do something about it:
+//    if (inChar == '\n') {
+//      stringComplete = true;
+//    }
+//  }
 }
 
 String recordDataString() {
