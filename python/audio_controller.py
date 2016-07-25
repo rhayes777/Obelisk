@@ -38,6 +38,7 @@ queues = []
 
 
 CHUNK_SIZE = 1024
+VOLUME_DECAY_RATE = 0.01
 
 # logging.basicConfig(level=logging.DEBUG)
 
@@ -82,7 +83,13 @@ class Loop:
         
         while should_play:
             if not self.queue.empty():
-                self.volume = self.queue.get()
+                new_volume = self.queue.get()
+                if new_volume >= self.volume:
+                    self.volume = new_volume
+                else:
+                    self.volume -= VOLUME_DECAY_RATE
+                    if self.volume < 0:
+                        self.volume = 0
                 
             arr = self.volume * numpy.fromstring(data, numpy.int16) 
             data = struct.pack('h'*len(arr), *arr)
