@@ -1,9 +1,14 @@
 import serial
 import ast
+import logging
+import time
+
+logging.basicConfig(level=logging.DEBUG)
 
 class Arduino:
     
     def __init__(self, port):
+        self.port = port
         self.ser = serial.Serial(port, 9600)
         self.write("1")
         
@@ -25,7 +30,8 @@ class Arduino:
         string = self.read()
         if not string:
             return None
-        string = string.split("\n")[0]
+        arr = string.split("\n")
+        string = arr[0]
         if "[" in string and "]" in string:
             return ast.literal_eval(string)
         return None
@@ -43,8 +49,10 @@ class Arduino:
         return self.in_waiting() > 0
         
     def request_array(self):
+        logging.debug("requesting from port {}".format(self.port))
         array = None
         while not array: 
            self.write("1")
+           time.sleep(0.1)
            array = self.read_array()
         return array
