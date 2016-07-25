@@ -3,7 +3,9 @@ import ast
 import logging
 import time
 
-logging.basicConfig(level=logging.DEBUG)
+MEASUREMENT_PAUSE = 0.1  # s
+
+# logging.basicConfig(level=logging.DEBUG)
 
 class Arduino:
     
@@ -45,14 +47,12 @@ class Arduino:
     def in_waiting(self):
         return self.ser.inWaiting()
         
-    def has_waiting(self):
-        return self.in_waiting() > 0
-        
     def request_array(self):
         logging.debug("requesting from port {}".format(self.port))
         array = None
         while not array: 
            self.write("1")
-           time.sleep(0.1)
+           time.sleep(MEASUREMENT_PAUSE)
            array = self.read_array()
         return array
+        
