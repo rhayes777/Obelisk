@@ -91,7 +91,6 @@ def loop():
         if line1 and line2:
             line1.extend(line2)
             line = line1
-            print line
     
             input_array = milliseconds_to_meters_array(line)
     
@@ -99,7 +98,6 @@ def loop():
                 logging.info("normalising")
                 normalise(input_array)
                 continue
-            logging.info("normalised")
     
             sample_arrays.pop(0)
             sample_arrays.append(input_array)
