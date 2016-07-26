@@ -74,9 +74,9 @@ def normalise(new_sample_array):
 
 
 def loop():
-#     ports = util.get_arduino_ports()
-#     arduino1 = Arduino(ports[0])
-#     arduino2 = Arduino(ports[1])
+    ports = util.get_arduino_ports()
+    arduino1 = Arduino(ports[0])
+    arduino2 = Arduino(ports[1])
 
     for n in range(0, 2 * INPUT_ARRAY_SIZE):
         print "Playing {}".format(audio_samples[n])
