@@ -28,6 +28,11 @@ C_NEAR_Master = "C_NEAR_Master.wav"
 D_FAR_Master  = "D_FAR_Master.wav"
 D_NEAR_Master = "D_NEAR_Master.wav"
 
+KLAXON_MIXDOWN_KLAXON1 = "KLAXON_MIXDOWN_KLAXON1.wav"
+KLAXON_MIXDOWN_KLAXON2 = "KLAXON_MIXDOWN_KLAXON2.wav"
+KLAXON_MIXDOWN_KLAXON3 = "KLAXON_MIXDOWN_KLAXON3.wav"
+KLAXON_MIXDOWN_KLAXON4 = "KLAXON_MIXDOWN_KLAXON4.wav"
+
 
 # Instantiate PyAudio.
 p = pyaudio.PyAudio()
@@ -131,15 +136,16 @@ class Loop:
         logging.debug("{}: {}".format(self.wav_filename, message))    
 
 
-def loop_wav_on_new_thread(name, no_of_queues_required):
-    t = Thread(target=loop_wav, args=(name, no_of_queues_required, ))
+def loop_wav_on_new_thread(name, no_of_queues_required=0, no_of_loops_required=-1):
+    t = Thread(target=loop_wav, args=(name, no_of_queues_required, no_of_loops_required, ))
     t.start()
     
-def loop_wav(name, no_of_queues_required):
-    loop = Loop(name, no_of_queues_required)
-    print "appending queue to queues"
-    queues.append(loop.queue)
-    print "new size = {}".format(len(queues))
+def loop_wav(name, no_of_queues_required, no_of_loops_required):
+    loop = Loop(name, no_of_queues_required, no_of_loops_required)
+    if no_of_queues_required:
+        print "appending queue to queues"
+        queues.append(loop.queue)
+        print "new size = {}".format(len(queues))
     loop.start()
     print "loop started"
 
