@@ -36,6 +36,7 @@ is_sample_tapering = True
 
 queues = []
 
+number_of_ready_loops = 0
 
 CHUNK_SIZE = 1024
 VOLUME_DECAY_RATE = 0.01
@@ -44,14 +45,16 @@ VOLUME_DECAY_RATE = 0.01
 
 class Loop:
     
-    def __init__(self, wav_filename, no_of_queues_required, chunk_size=CHUNK_SIZE, volume=1):
+    def __init__(self, wav_filename, no_of_loops_required, chunk_size=CHUNK_SIZE, volume=1):
         self.wav_filename = wav_filename
         self.chunk_size=chunk_size
         self.volume = volume
-        self.no_of_queues_required = no_of_queues_required
+        self.no_of_loops_required = no_of_loops_required
         self.queue = Queue()
 
     def start(self):
+        
+        global number_of_ready_loops
     
         try:
             self.log('Trying to play file ' + self.wav_filename)
@@ -82,7 +85,8 @@ class Loop:
         data = wf.readframes(self.chunk_size)
         self.log("data got")
         
-        while len(queues) < self.no_of_queues_required:
+        number_of_ready_loops += 1
+        while number_of_ready_loops < self.no_of_loops_required:
             pass
         
         while should_play:
