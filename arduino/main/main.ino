@@ -7,6 +7,7 @@ int lightModes[] = {0, 0};
 boolean isOn = true;
 int count = 0;
 int switchLimit = 2000;
+int maxValue = 100000;
 
 int numberOfSensors;
 
@@ -52,7 +53,8 @@ void serialEvent() {
 
 String recordDataString() {
   String result = "[";
-  int sum = -1;
+  int value = maxValue;
+  int pairNumber = 0;
   for (int n; n < numberOfSensors; n++) {
     int trigPin = trigPins[n];
     int echoPin = echoPins[n];
@@ -64,14 +66,15 @@ String recordDataString() {
     
     digitalWrite(trigPin, LOW);
     int input = pulseIn(echoPin, HIGH);
-    if (sum == -1) {
-      sum = input;
+    if (input < value) {
+      value = input;
     }
-    else {
-      sum += input;
-      int avg = sum / 2;
-      sum = -1;
-      result += String(avg) + (n < numberOfSensors - 1 ? "," : "]");
+    if (pairNumber == 1) {
+      result += String(value) + (n < numberOfSensors - 1 ? "," : "]");
+      value = maxValue;
+      pairNumber = 0;
+    } else {
+      pairNumber = 1;
     }
   }
   return result;
