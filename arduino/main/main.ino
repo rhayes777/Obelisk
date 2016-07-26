@@ -4,6 +4,9 @@
 int trigPins[] = {2,3,4,5};
 int echoPins[] = {6,7,8,9};
 int lightModes[] = {0, 0};
+boolean isOn = true;
+int count = 0;
+int switchLimit = 2000;
 
 int numberOfSensors;
 
@@ -22,8 +25,16 @@ void setup() {
 
 void loop() {
   wdt_reset();
-
-
+  count++;
+  if (isOn) {
+    digitalWrite(LEDPin, HIGH);
+    delayMicroseconds(lightModes[0]);
+    digitalWrite(LEDPin, LOW);
+  }
+  if (count == switchLimit) {
+    isOn = !isOn;
+    count = 0;
+  }
 }
 
 void serialEvent() {
