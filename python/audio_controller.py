@@ -60,7 +60,10 @@ class Loop:
 
     def start(self):
         
+        global should_play
         global number_of_ready_loops
+        
+        should_play = True
     
         try:
             self.log('Trying to play file ' + self.wav_filename)
@@ -98,10 +101,6 @@ class Loop:
             pass
         
         while should_play:
-            if self.number_of_times_to_loop > 0:
-                if loop_number == self.number_of_times_to_loop:
-                    break
-                loop_number += 1
             if not self.queue.empty():
                 new_volume = self.queue.get()
                 if new_volume >= self.volume:
@@ -119,7 +118,11 @@ class Loop:
             data = wf.readframes(self.chunk_size)
     
             if data == '':  # If file is over then rewind.
-    
+                if self.number_of_times_to_loop > 0:
+                    loop_number += 1
+                    if loop_number == self.number_of_times_to_loop:
+                        should_play = False
+                    print loop_number
                 wf.rewind()
                 data = wf.readframes(self.chunk_size)
         
@@ -136,16 +139,17 @@ class Loop:
         logging.debug("{}: {}".format(self.wav_filename, message))    
 
 
-def loop_wav_on_new_thread(name, no_of_queues_required=0, no_of_loops_required=-1):
-    t = Thread(target=loop_wav, args=(name, no_of_queues_required, no_of_loops_required, ))
+def loop_wav_on_new_thread(name, no_of_queues_required=0, no_of_times_to_loop=-1):
+    t = Thread(target=loop_wav, args=(name, no_of_queues_required, no_of_times_to_loop, ))
     t.start()
     
-def loop_wav(name, no_of_queues_required, no_of_loops_required):
-    loop = Loop(name, no_of_queues_required, no_of_loops_required)
+def loop_wav(name, no_of_queues_required, no_of_times_to_loop):
+    loop = Loop(name, no_of_queues_required, number_of_times_to_loop=no_of_times_to_loop)
     if no_of_queues_required:
         print "appending queue to queues"
         queues.append(loop.queue)
         print "new size = {}".format(len(queues))
+    print "starting loop..."
     loop.start()
-    print "loop started"
+    
 
