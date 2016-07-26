@@ -45,7 +45,8 @@ VOLUME_DECAY_RATE = 0.01
 
 class Loop:
     
-    def __init__(self, wav_filename, no_of_loops_required, chunk_size=CHUNK_SIZE, volume=1):
+    def __init__(self, wav_filename, no_of_loops_required, chunk_size=CHUNK_SIZE, volume=1, number_of_times_to_loop=-1):
+        self.number_of_times_to_loop = number_of_times_to_loop
         self.wav_filename = wav_filename
         self.chunk_size=chunk_size
         self.volume = volume
@@ -85,11 +86,17 @@ class Loop:
         data = wf.readframes(self.chunk_size)
         self.log("data got")
         
+        loop_number = 0
+        
         number_of_ready_loops += 1
         while number_of_ready_loops < self.no_of_loops_required:
             pass
         
         while should_play:
+            if self.number_of_times_to_loop > 0:
+                if loop_number == self.number_of_times_to_loop:
+                    break
+                loop_number += 1
             if not self.queue.empty():
                 new_volume = self.queue.get()
                 if new_volume >= self.volume:
