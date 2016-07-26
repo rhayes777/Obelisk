@@ -1,21 +1,16 @@
 #define LEDPin 13 // Onboard LED
+#include <avr/wdt.h>
 
 int trigPins[] = {2,3,4,5};
 int echoPins[] = {6,7,8,9};
 int lightModes[] = {0, 0};
 
-String inputString = "";         // a string to hold incoming data
-boolean stringComplete = false;  // whether the string is complete
-
 int numberOfSensors;
-
-long duration, distance; // Duration used to calculate distance
-
-
 
 void setup() {
     Serial.begin(9600);
-    inputString.reserve(200);
+    wdt_enable(WDTO_1S);
+ 
     numberOfSensors = sizeof(trigPins)/sizeof(int);
 
  for (int n; n < numberOfSensors; n++) {
@@ -26,11 +21,10 @@ void setup() {
 }
 
 void loop() {
-
+  wdt_reset();
 
 
 }
-
 
 void serialEvent() {
   int n = 0;
