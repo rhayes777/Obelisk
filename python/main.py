@@ -42,15 +42,26 @@ print sample_arrays
 #     audio_controller.D_NEAR_Master
 # ]
 
+# audio_samples = [
+#     audio_controller.TRACK2_1A,
+#     audio_controller.TRACK2_1B,
+#     audio_controller.TRACK2_2A,
+#     audio_controller.TRACK2_2B,
+#     audio_controller.TRACK2_3A,
+#     audio_controller.TRACK2_3B,
+#     audio_controller.TRACK2_4A,
+#     audio_controller.TRACK2_4B
+# ]
+
 audio_samples = [
-    audio_controller.TRACK2_1A,
-    audio_controller.TRACK2_1B,
-    audio_controller.TRACK2_2A,
-    audio_controller.TRACK2_2B,
-    audio_controller.TRACK2_3A,
-    audio_controller.TRACK2_3B,
-    audio_controller.TRACK2_4A,
-    audio_controller.TRACK2_4B
+    audio_controller.TRACK2_1A_2,
+    audio_controller.TRACK2_1B_2,
+    audio_controller.TRACK2_2A_2,
+    audio_controller.TRACK2_2B_2,
+    audio_controller.TRACK2_3A_2,
+    audio_controller.TRACK2_3B_2,
+    audio_controller.TRACK2_4A_2,
+    audio_controller.TRACK2_4B_2
 ]
 
 last_sample_array = None
