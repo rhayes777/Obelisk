@@ -66,10 +66,10 @@ String recordDataString() {
     
     digitalWrite(trigPin, LOW);
     int input = pulseIn(echoPin, HIGH);
-    Serial.println("input = " + String(input));
+    
     if (input < value || value == -1) {
       value = input;
-      Serial.println("value set " + String(value));
+      
     }
     if (pairNumber == 1) {
       result += String(value) + (n < numberOfSensors - 1 ? "," : "]");
