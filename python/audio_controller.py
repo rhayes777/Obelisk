@@ -62,7 +62,7 @@ queues = []
 number_of_ready_loops = 0
 
 CHUNK_SIZE = 1024
-VOLUME_DECAY_RATE = 0.01
+VOLUME_DECAY_RATE = 0.15
 
 # logging.basicConfig(level=logging.DEBUG)
 
