@@ -7,7 +7,6 @@ int lightModes[] = {0, 0};
 boolean isOn = true;
 int count = 0;
 int switchLimit = 2000;
-int maxValue = 32767;
 
 int numberOfSensors;
 
@@ -22,6 +21,7 @@ void setup() {
     pinMode(echoPins[n], INPUT);
  }
  pinMode(LEDPin, OUTPUT); // Use LED indicator (if required)
+ 
 }
 
 void loop() {
@@ -53,7 +53,7 @@ void serialEvent() {
 
 String recordDataString() {
   String result = "[";
-  int value = maxValue;
+  int value = -1;
   int pairNumber = 0;
   for (int n; n < numberOfSensors; n++) {
     int trigPin = trigPins[n];
@@ -66,12 +66,14 @@ String recordDataString() {
     
     digitalWrite(trigPin, LOW);
     int input = pulseIn(echoPin, HIGH);
-    if (input < value) {
+    Serial.println("input = " + String(input));
+    if (input < value || value == -1) {
       value = input;
+      Serial.println("value set " + String(value));
     }
     if (pairNumber == 1) {
       result += String(value) + (n < numberOfSensors - 1 ? "," : "]");
-      value = maxValue;
+      value = -1;
       pairNumber = 0;
     } else {
       pairNumber = 1;
