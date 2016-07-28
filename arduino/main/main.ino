@@ -7,7 +7,7 @@ int lightModes[] = {0, 0};
 boolean isOn = true;
 int count = 0;
 int switchLimit = 2000;
-int maxValue = 100000;
+int maxValue = 32767;
 
 int numberOfSensors;
 
