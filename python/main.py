@@ -15,7 +15,7 @@ MAX_DISTANCE = 300
 CLOSE_DISTANCE = 100
 TIME_DISTANCE_CONVERSION_FACTOR = 58.138
 
-SAMPLE_SIZE = 10
+SAMPLE_SIZE = 5
 
 INPUT_ARRAY_SIZE = 4
 
@@ -31,27 +31,27 @@ for n in range(0, SAMPLE_SIZE):
 
 print sample_arrays
 
-audio_samples = [
-    audio_controller.A_FAR_Master,
-    audio_controller.A_NEAR_Master,
-    audio_controller.B_FAR_Master,
-    audio_controller.B_NEAR_Master,
-    audio_controller.C_FAR_Master,
-    audio_controller.C_NEAR_Master,
-    audio_controller.D_FAR_Master,
-    audio_controller.D_NEAR_Master
-]
-
 # audio_samples = [
-#     audio_controller.TRACK2_1A,
-#     audio_controller.TRACK2_1B,
-#     audio_controller.TRACK2_2A,
-#     audio_controller.TRACK2_2B,
-#     audio_controller.TRACK2_3A,
-#     audio_controller.TRACK2_3B,
-#     audio_controller.TRACK2_4A,
-#     audio_controller.TRACK2_4B
+#     audio_controller.A_FAR_Master,
+#     audio_controller.A_NEAR_Master,
+#     audio_controller.B_FAR_Master,
+#     audio_controller.B_NEAR_Master,
+#     audio_controller.C_FAR_Master,
+#     audio_controller.C_NEAR_Master,
+#     audio_controller.D_FAR_Master,
+#     audio_controller.D_NEAR_Master
 # ]
+
+audio_samples = [
+    audio_controller.TRACK2_1A,
+    audio_controller.TRACK2_1B,
+    audio_controller.TRACK2_2A,
+    audio_controller.TRACK2_2B,
+    audio_controller.TRACK2_3A,
+    audio_controller.TRACK2_3B,
+    audio_controller.TRACK2_4A,
+    audio_controller.TRACK2_4B
+]
 
 # audio_samples = [
 #     audio_controller.TRACK2_1A_2,
@@ -105,6 +105,7 @@ def loop():
     for n in range(0, 2 * INPUT_ARRAY_SIZE):
         print "Playing {}".format(audio_samples[n])
         audio_controller.loop_wav_on_new_thread(audio_samples[n], INPUT_ARRAY_SIZE)
+        
 
     print "starting read loop"
     while True:
