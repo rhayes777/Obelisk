@@ -19,7 +19,7 @@ SAMPLE_SIZE = 10
 
 INPUT_ARRAY_SIZE = 4
 
-NORMALISING_THRESHOLD = 0.1
+NORMALISING_THRESHOLD = 1
 
 test_array = INPUT_ARRAY_SIZE * [False]
 
@@ -31,27 +31,27 @@ for n in range(0, SAMPLE_SIZE):
 
 print sample_arrays
 
-# audio_samples = [
-#     audio_controller.A_FAR_Master,
-#     audio_controller.A_NEAR_Master,
-#     audio_controller.B_FAR_Master,
-#     audio_controller.B_NEAR_Master,
-#     audio_controller.C_FAR_Master,
-#     audio_controller.C_NEAR_Master,
-#     audio_controller.D_FAR_Master,
-#     audio_controller.D_NEAR_Master
-# ]
-
 audio_samples = [
-    audio_controller.TRACK2_1A,
-    audio_controller.TRACK2_1B,
-    audio_controller.TRACK2_2A,
-    audio_controller.TRACK2_2B,
-    audio_controller.TRACK2_3A,
-    audio_controller.TRACK2_3B,
-    audio_controller.TRACK2_4A,
-    audio_controller.TRACK2_4B
+    audio_controller.A_FAR_Master,
+    audio_controller.A_NEAR_Master,
+    audio_controller.B_FAR_Master,
+    audio_controller.B_NEAR_Master,
+    audio_controller.C_FAR_Master,
+    audio_controller.C_NEAR_Master,
+    audio_controller.D_FAR_Master,
+    audio_controller.D_NEAR_Master
 ]
+
+# audio_samples = [
+#     audio_controller.TRACK2_1A,
+#     audio_controller.TRACK2_1B,
+#     audio_controller.TRACK2_2A,
+#     audio_controller.TRACK2_2B,
+#     audio_controller.TRACK2_3A,
+#     audio_controller.TRACK2_3B,
+#     audio_controller.TRACK2_4A,
+#     audio_controller.TRACK2_4B
+# ]
 
 # audio_samples = [
 #     audio_controller.TRACK2_1A_2,
