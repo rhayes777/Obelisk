@@ -7,7 +7,7 @@ from operator import add
 import util
 from arduino import Arduino
 
-# logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG, filename='main.log')
 
 # http://playground.arduino.cc/Interfacing/Python
 
