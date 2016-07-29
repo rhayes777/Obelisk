@@ -6,7 +6,6 @@ import audio_controller
 from operator import add
 import util
 from arduino import Arduino
-import math
 
 # logging.basicConfig(level=logging.INFO)
 
@@ -86,8 +85,7 @@ def normalise(new_sample_array):
     if last_sample_array is not None:
         for n in range(0, INPUT_ARRAY_SIZE):
             if not test_array[n]:
-                if abs(new_sample_array[n] - last_sample_array[n]) < NORMALISING_THRESHOLD or (
-                        new_sample_array[n] > MAX_DISTANCE and last_sample_array[n] > MAX_DISTANCE):
+                if abs(new_sample_array[n] - last_sample_array[n]) < NORMALISING_THRESHOLD or (new_sample_array[n] > MAX_DISTANCE and last_sample_array[n] > MAX_DISTANCE):
                     test_array[n] = True
                     if new_sample_array[n] < MAX_DISTANCE:
                         max_distance_array[n] = new_sample_array[n]
@@ -107,6 +105,7 @@ def loop():
     for n in range(0, 2 * INPUT_ARRAY_SIZE):
         print "Playing {}".format(audio_samples[n])
         audio_controller.loop_wav_on_new_thread(audio_samples[n], INPUT_ARRAY_SIZE)
+
 
     print "starting read loop"
     while True:
@@ -149,7 +148,8 @@ def loop():
                 volume_far = 1 - distance / max_distance
                 volume_near = 0
                 if distance < CLOSE_DISTANCE:
-                    volume_near = math.pow((distance - CLOSE_DISTANCE) / CLOSE_DISTANCE, 2)
+                    volume_near = round(1 - distance / CLOSE_DISTANCE, 1)
+                    print volume_near
                 logging.info("sensor {} at {}".format(n, distance))
                 audio_controller.queues[2 * n].put(volume_near)
                 audio_controller.queues[2 * n + 1].put(volume_far)
