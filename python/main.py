@@ -150,7 +150,7 @@ def loop():
                 if distance < CLOSE_DISTANCE:
                     volume_near = 1 - distance / CLOSE_DISTANCE
                 logging.info("sensor {} at {}".format(n, distance))
-                audio_controller.queues[2 * n].put(volume_near)
+                audio_controller.queues[2 * n].put(volume_far)
                 audio_controller.queues[2 * n + 1].put(volume_far)
                 volumes[n] = volume_far
             
