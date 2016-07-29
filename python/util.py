@@ -34,7 +34,7 @@ def serial_ports():
 def get_arduino_ports():
     all_ports = serial_ports()
     print all_ports
-    tty_ports = filter(lambda port_name: "tty.usbmodem" in port_name, all_ports)
+    tty_ports = filter(lambda port_name: "tty.usbmodem" in port_name or "COM" in port_name, all_ports)
     if len(tty_ports) > 2:
         print "Too many ports found! Try manually entering them from this list:"
         print tty_ports
