@@ -57,6 +57,8 @@ p = pyaudio.PyAudio()
 should_play = True
 is_sample_tapering = True
 
+STABILISING_FACTOR = 10
+
 queues = []
 
 number_of_ready_loops = 0
@@ -117,6 +119,9 @@ class Loop:
         number_of_ready_loops += 1
         while number_of_ready_loops < self.no_of_loops_required:
             pass
+
+        factor = self.volume
+        n = 0
         
         while should_play:
             if not self.queue.empty():
@@ -127,8 +132,14 @@ class Loop:
                     self.volume -= VOLUME_DECAY_RATE
                     if self.volume < 0:
                         self.volume = 0
+
+            if n == STABILISING_FACTOR:
+                n = 0
+                self.volume = factor
+            else:
+                n += 1
                 
-            arr = self.volume * numpy.fromstring(data, numpy.int16) 
+            arr = factor * numpy.fromstring(data, numpy.int16)
             data = struct.pack('h'*len(arr), *arr)
     
             stream.write(data)

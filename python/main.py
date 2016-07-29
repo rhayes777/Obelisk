@@ -12,7 +12,7 @@ from arduino import Arduino
 # http://playground.arduino.cc/Interfacing/Python
 
 MAX_DISTANCE = 300
-CLOSE_DISTANCE = 100
+CLOSE_DISTANCE = 5
 TIME_DISTANCE_CONVERSION_FACTOR = 58.138
 
 SAMPLE_SIZE = 50
