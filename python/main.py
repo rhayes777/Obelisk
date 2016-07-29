@@ -15,7 +15,7 @@ MAX_DISTANCE = 300
 CLOSE_DISTANCE = 100
 TIME_DISTANCE_CONVERSION_FACTOR = 58.138
 
-SAMPLE_SIZE = 5
+SAMPLE_SIZE = 50
 
 INPUT_ARRAY_SIZE = 4
 
@@ -148,8 +148,7 @@ def loop():
                 volume_far = 1 - distance / max_distance
                 volume_near = 0
                 if distance < CLOSE_DISTANCE:
-                    volume_near = round(1 - distance / CLOSE_DISTANCE, 1)
-                    print volume_near
+                    volume_near = 1 - distance / CLOSE_DISTANCE
                 logging.info("sensor {} at {}".format(n, distance))
                 audio_controller.queues[2 * n].put(volume_near)
                 audio_controller.queues[2 * n + 1].put(volume_far)
