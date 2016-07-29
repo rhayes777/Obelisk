@@ -135,7 +135,7 @@ class Loop:
 
             if n == STABILISING_FACTOR:
                 n = 0
-                self.volume = factor
+                factor = self.volume
             else:
                 n += 1
                 
