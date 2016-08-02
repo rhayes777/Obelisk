@@ -112,6 +112,8 @@ def setup(track_name):
     ports = util.get_arduino_ports()
     arduino1 = Arduino(ports[0])
     arduino2 = Arduino(ports[1])
+    
+    normalise()
 
 
 def get_input_array():
