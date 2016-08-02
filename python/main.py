@@ -102,15 +102,16 @@ def play(track_name="evening"):
 
 
 def setup(track_name):
-    global arduino1, arduino2
     audio_samples = track_dict[track_name]
-    ports = util.get_arduino_ports()
-    arduino1 = Arduino(ports[0])
-    arduino2 = Arduino(ports[1])
 
     for n in range(0, 2 * INPUT_ARRAY_SIZE):
         print "Playing {}".format(audio_samples[n])
         audio_controller.loop_wav_on_new_thread(audio_samples[n], INPUT_ARRAY_SIZE)
+        
+    global arduino1, arduino2
+    ports = util.get_arduino_ports()
+    arduino1 = Arduino(ports[0])
+    arduino2 = Arduino(ports[1])
 
 
 def get_input_array():
