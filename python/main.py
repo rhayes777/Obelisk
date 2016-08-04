@@ -33,24 +33,24 @@ print sample_arrays
 
 afternoon = [
     audio_controller.A_FAR_Master,
-    audio_controller.A_NEAR_Master,
+
     audio_controller.B_FAR_Master,
-    audio_controller.B_NEAR_Master,
+
     audio_controller.C_FAR_Master,
-    audio_controller.C_NEAR_Master,
-    audio_controller.D_FAR_Master,
-    audio_controller.D_NEAR_Master
+
+    audio_controller.D_FAR_Master
+
 ]
 
 evening = [
     audio_controller.TRACK2_1A,
-    audio_controller.TRACK2_1B,
+
     audio_controller.TRACK2_2A,
-    audio_controller.TRACK2_2B,
+
     audio_controller.TRACK2_3A,
-    audio_controller.TRACK2_3B,
-    audio_controller.TRACK2_4A,
-    audio_controller.TRACK2_4B
+
+    audio_controller.TRACK2_4A
+
 ]
 
 track_dict = {"afternoon": afternoon,
@@ -104,7 +104,7 @@ def play(track_name="evening"):
 def setup(track_name):
     audio_samples = track_dict[track_name]
 
-    for n in range(0, 2 * INPUT_ARRAY_SIZE):
+    for n in range(0, INPUT_ARRAY_SIZE):
         print "Playing {}".format(audio_samples[n])
         audio_controller.loop_wav_on_new_thread(audio_samples[n], INPUT_ARRAY_SIZE)
         
@@ -154,12 +154,9 @@ def loop():
             if distance > max_distance:
                 distance = max_distance
             volume_far = 1 - distance / max_distance
-            volume_near = 0
-            if distance < CLOSE_DISTANCE:
-                volume_near = 1 - distance / CLOSE_DISTANCE
+
             logging.info("sensor {} at {}".format(n, distance))
-            audio_controller.queues[2 * n].put(volume_near)
-            audio_controller.queues[2 * n + 1].put(volume_far)
+            audio_controller.queues[n].put(volume_far)
             volumes[n] = volume_far
 
         arduino1.set_light_modes_by_volumes(volumes[:2])
