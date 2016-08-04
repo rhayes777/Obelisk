@@ -113,7 +113,7 @@ def setup(track_name):
     arduino1 = Arduino(ports[0])
     arduino2 = Arduino(ports[1])
     
-    normalise()
+#     normalise()
 
 
 def get_input_array():
