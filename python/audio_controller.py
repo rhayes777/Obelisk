@@ -85,7 +85,7 @@ class Loop:
     
         try:
             self.log('Trying to play file ' + self.wav_filename)
-            wf = wave.open("samples/" + self.wav_filename, 'rb')
+            wf = wave.open('C:\Users\Cooper Studios\Documents\GitHub\Obelisk\python\samples\{}'.format(self.wav_filename), 'rb')
         except IOError as ioe:
             sys.stderr.write('IOError on file ' + self.wav_filename + '\n' + \
                              str(ioe) + '. Skipping.\n')
