@@ -4,6 +4,34 @@ import logging
 import time
 import math
 
+from threading import Thread
+import functools
+
+def timeout(timeout):
+    def deco(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            res = [Exception('function [%s] timeout [%s seconds] exceeded!' % (func.__name__, timeout))]
+            def newFunc():
+                try:
+                    res[0] = func(*args, **kwargs)
+                except Exception, e:
+                    res[0] = e
+            t = Thread(target=newFunc)
+            t.daemon = True
+            try:
+                t.start()
+                t.join(timeout)
+            except Exception, je:
+                print 'error starting thread'
+                raise je
+            ret = res[0]
+            if isinstance(ret, BaseException):
+                raise ret
+            return ret
+        return wrapper
+    return deco
+
 MEASUREMENT_PAUSE = 0.1  # s
 
 # logging.basicConfig(level=logging.DEBUG)
@@ -29,15 +57,17 @@ class Arduino:
                     result += next
             return result
         return None
-        
+
+    @timeout(5)    
     def read_array(self):
         string = self.read()
+        print "read"
         if not string:
             return None
         arr = string.split("\n")
         string = arr[0]
         if "[" in string and "]" in string:
-##            print string
+            print string
             try:
                 arr = ast.literal_eval(string)
                 if isinstance(arr, list):
@@ -46,22 +76,24 @@ class Arduino:
                 print e
         return None
         
-    def read_next_array(self):
-        array = None
-        while not array:
-            array = self.read_array()
-        return array
-        
     def in_waiting(self):
         return self.ser.inWaiting()
         
     def request_array(self):
         logging.debug("requesting from port {}".format(self.port))
         array = None
+        attempt_count = 0
         while not array:
+            attempt_count += 1
+            print attempt_count
             self.write("-1")
+            print "written"
             time.sleep(MEASUREMENT_PAUSE)
-            array = self.read_array()
+            print "slept"
+            try:
+                array = self.read_array()
+            except Exception as exc:
+                print exc
         return array
         
     def set_light_modes(self, light_modes):
