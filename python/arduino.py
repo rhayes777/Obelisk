@@ -37,7 +37,13 @@ class Arduino:
         arr = string.split("\n")
         string = arr[0]
         if "[" in string and "]" in string:
-            return ast.literal_eval(string)
+##            print string
+            try:
+                arr = ast.literal_eval(string)
+                if isinstance(arr, list):
+                    return arr 
+            except Exception as e:
+                print e
         return None
         
     def read_next_array(self):
