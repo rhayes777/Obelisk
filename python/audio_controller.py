@@ -7,6 +7,7 @@ from time import sleep
 import numpy
 import struct
 from Queue import Queue
+import os
 
 # http://playground.arduino.cc/Interfacing/Python
 
@@ -64,6 +65,8 @@ number_of_ready_loops = 0
 CHUNK_SIZE = 512
 VOLUME_DECAY_RATE = 0.15
 
+dir = os.path.dirname(__file__)
+
 # logging.basicConfig(level=logging.DEBUG)
 
 class Loop:
@@ -85,7 +88,7 @@ class Loop:
     
         try:
             self.log('Trying to play file ' + self.wav_filename)
-            wf = wave.open('C:\Users\Cooper Studios\Documents\GitHub\Obelisk\python\samples\{}'.format(self.wav_filename), 'rb')
+            wf = wave.open(os.path.join(dir, 'samples/{}'.format(self.wav_filename)), 'rb')
         except IOError as ioe:
             sys.stderr.write('IOError on file ' + self.wav_filename + '\n' + \
                              str(ioe) + '. Skipping.\n')
