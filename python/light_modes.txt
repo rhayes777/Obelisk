@@ -1,0 +1,10 @@
+0 - off
+1 - background
+2 - dim
+3 -
+4 -
+5 -
+6 - 
+7 - bright
+8 - fading
+9 - flashing
