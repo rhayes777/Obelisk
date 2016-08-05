@@ -162,7 +162,7 @@ def loop():
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.DEBUG)
+    logging.basicConfig(level=logging.INFO)
     if len(sys.argv) > 1:
         play(sys.argv[1])
     else:

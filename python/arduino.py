@@ -61,13 +61,11 @@ class Arduino:
     @timeout(5)    
     def read_array(self):
         string = self.read()
-        print "read"
         if not string:
             return None
         arr = string.split("\n")
         string = arr[0]
         if "[" in string and "]" in string:
-            print string
             try:
                 arr = ast.literal_eval(string)
                 if isinstance(arr, list):
@@ -85,11 +83,8 @@ class Arduino:
         attempt_count = 0
         while not array:
             attempt_count += 1
-            print attempt_count
             self.write("-1")
-            print "written"
             time.sleep(MEASUREMENT_PAUSE)
-            print "slept"
             try:
                 array = self.read_array()
             except Exception as exc:
