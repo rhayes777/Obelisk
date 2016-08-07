@@ -47,6 +47,11 @@ TRACK2_3B_2 = "TRACK2_3B_2.wav"
 TRACK2_4A_2 = "TRACK2_4A_2.wav"
 TRACK2_4B_2 = "TRACK2_4B_2.wav"
 
+TRACK3_drums = "TRACK3_drums.wav"
+TRACK3_bass = "TRACK3_bass.wav"
+TRACK3_guitar_keys = "TRACK3_guitar_keys.wav"
+TRACK3_noises = "TRACK3_noises.wav"
+
 KLAXON_MIXDOWN_KLAXON1 = "KLAXON_MIXDOWN_KLAXON1.wav"
 KLAXON_MIXDOWN_KLAXON2 = "KLAXON_MIXDOWN_KLAXON2.wav"
 KLAXON_MIXDOWN_KLAXON3 = "KLAXON_MIXDOWN_KLAXON3.wav"
@@ -73,6 +78,13 @@ evening = [
 
 ]
 
+night = [
+    TRACK3_drums,
+    TRACK3_bass,
+    TRACK3_guitar_keys,
+    TRACK3_noises
+]
+
 koto = [
     KOTO_A,
     KOTO_B,
@@ -80,8 +92,10 @@ koto = [
     KOTO_D
 ]
 
+
 track_dict = {"afternoon": afternoon,
               "evening": evening,
+              "night": night,
               "koto": koto}
 
 
