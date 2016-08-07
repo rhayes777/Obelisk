@@ -156,7 +156,7 @@ class Loop:
     
         try:
             self.log('Trying to play file ' + self.wav_filename)
-            wf = wave.open(os.path.join(dir, 'samples/{}'.format(self.wav_filename)), 'rb')
+            wf = wave.open(os.path.join(dir, '../samples/{}'.format(self.wav_filename)), 'rb')
         except IOError as ioe:
             sys.stderr.write('IOError on file ' + self.wav_filename + '\n' + \
                              str(ioe) + '. Skipping.\n')
