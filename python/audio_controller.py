@@ -52,6 +52,38 @@ KLAXON_MIXDOWN_KLAXON2 = "KLAXON_MIXDOWN_KLAXON2.wav"
 KLAXON_MIXDOWN_KLAXON3 = "KLAXON_MIXDOWN_KLAXON3.wav"
 KLAXON_MIXDOWN_KLAXON4 = "KLAXON_MIXDOWN_KLAXON4.wav"
 
+KOTO_A = "KOTO_A"
+KOTO_B = "KOTO_B"
+KOTO_C = "KOTO_C"
+KOTO_D = "KOTO_D"
+
+afternoon = [
+    A_FAR_Master,
+    B_FAR_Master,
+    C_FAR_Master,
+    D_FAR_Master
+
+]
+
+evening = [
+    TRACK2_1A,
+    TRACK2_1B,
+    TRACK2_3B,
+    TRACK2_4B
+
+]
+
+koto = [
+    KOTO_A,
+    KOTO_B,
+    KOTO_C,
+    KOTO_D
+]
+
+track_dict = {"afternoon": afternoon,
+              "evening": evening,
+              "koto": koto}
+
 
 # Instantiate PyAudio.
 p = pyaudio.PyAudio()
@@ -66,6 +98,15 @@ CHUNK_SIZE = 512
 VOLUME_DECAY_RATE = 0.15
 
 dir = os.path.dirname(__file__)
+
+
+def play_track(track_name, number_of_channels):
+    audio_samples = audio_controller.track_dict[track_name]
+
+    for n in range(0, number_of_channels):
+        print "Playing {}".format(audio_samples[n])
+        audio_controller.loop_wav_on_new_thread(audio_samples[n], number_of_channels)
+
 
 # logging.basicConfig(level=logging.DEBUG)
 
@@ -172,5 +213,8 @@ def loop_wav(name, no_of_queues_required, no_of_times_to_loop):
         print "new size = {}".format(len(queues))
     print "starting loop..."
     loop.start()
+    
+    
+
     
 

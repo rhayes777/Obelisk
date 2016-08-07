@@ -29,31 +29,6 @@ for n in range(0, SAMPLE_SIZE):
 
 print sample_arrays
 
-afternoon = [
-    audio_controller.A_FAR_Master,
-
-    audio_controller.B_FAR_Master,
-
-    audio_controller.C_FAR_Master,
-
-    audio_controller.D_FAR_Master
-
-]
-
-evening = [
-    audio_controller.TRACK2_1A,
-
-    audio_controller.TRACK2_1B,
-
-    audio_controller.TRACK2_3B,
-
-    audio_controller.TRACK2_4B
-
-]
-
-track_dict = {"afternoon": afternoon,
-              "evening": evening}
-
 
 def milliseconds_to_centimeters(value):
     return value / TIME_DISTANCE_CONVERSION_FACTOR
@@ -100,11 +75,7 @@ def play(track_name="evening"):
 
 
 def setup(track_name):
-    audio_samples = track_dict[track_name]
-
-    for n in range(0, INPUT_ARRAY_SIZE):
-        print "Playing {}".format(audio_samples[n])
-        audio_controller.loop_wav_on_new_thread(audio_samples[n], INPUT_ARRAY_SIZE)
+    audio_controller.play_track(track_name, INPUT_ARRAY_SIZE)
         
     global arduino1, arduino2
     ports = util.get_arduino_ports()
