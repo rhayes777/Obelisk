@@ -52,6 +52,11 @@ TRACK3_bass = "TRACK3_bass.wav"
 TRACK3_guitar_keys = "TRACK3_guitar_keys.wav"
 TRACK3_noises = "TRACK3_noises.wav"
 
+WHITE_sitar = "WHITE_sitar.wav"
+WHITE_guitar = "WHITE_sitar.wav"
+WHITE_percnsub = "WHITE_percnsub.wav"
+WHITE_atmos = "WHITE_atmos.wav"
+
 KLAXON_MIXDOWN_KLAXON1 = "KLAXON_MIXDOWN_KLAXON1.wav"
 KLAXON_MIXDOWN_KLAXON2 = "KLAXON_MIXDOWN_KLAXON2.wav"
 KLAXON_MIXDOWN_KLAXON3 = "KLAXON_MIXDOWN_KLAXON3.wav"
@@ -88,15 +93,23 @@ night = [
 koto = [
     KOTO_bass,
     KOTO_lead,
-    KOTO_int,
+    KOTO_inst,
     KOTO_drums
+]
+
+white = [
+    WHITE_atmos,
+    WHITE_guitar,
+    WHITE_percnsub,
+    WHITE_sitar
 ]
 
 
 track_dict = {"afternoon": afternoon,
               "evening": evening,
               "night": night,
-              "koto": koto}
+              "koto": koto,
+              "white": white}
 
 
 # Instantiate PyAudio.
