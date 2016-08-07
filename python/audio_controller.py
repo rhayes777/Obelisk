@@ -57,10 +57,10 @@ KLAXON_MIXDOWN_KLAXON2 = "KLAXON_MIXDOWN_KLAXON2.wav"
 KLAXON_MIXDOWN_KLAXON3 = "KLAXON_MIXDOWN_KLAXON3.wav"
 KLAXON_MIXDOWN_KLAXON4 = "KLAXON_MIXDOWN_KLAXON4.wav"
 
-KOTO_A = "KOTO_A.wav"
-KOTO_B = "KOTO_B.wav"
-KOTO_C = "KOTO_C.wav"
-KOTO_D = "KOTO_D.wav"
+KOTO_bass = "KOTO_bass.wav"
+KOTO_lead = "KOTO_lead.wav"
+KOTO_inst = "KOTO_inst.wav"
+KOTO_drums = "KOTO_drums.wav"
 
 afternoon = [
     A_FAR_Master,
@@ -86,10 +86,10 @@ night = [
 ]
 
 koto = [
-    KOTO_A,
-    KOTO_B,
-    KOTO_C,
-    KOTO_D
+    KOTO_bass,
+    KOTO_lead,
+    KOTO_int,
+    KOTO_drums
 ]
 
 
