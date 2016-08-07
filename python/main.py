@@ -43,11 +43,11 @@ afternoon = [
 evening = [
     audio_controller.TRACK2_1A,
 
-    audio_controller.TRACK2_2A,
+    audio_controller.TRACK2_1B,
 
-    audio_controller.TRACK2_3A,
+    audio_controller.TRACK2_3B,
 
-    audio_controller.TRACK2_4A
+    audio_controller.TRACK2_4B
 
 ]
 
