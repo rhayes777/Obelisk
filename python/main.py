@@ -30,14 +30,6 @@ for n in range(0, SAMPLE_SIZE):
 print sample_arrays
 
 
-def milliseconds_to_centimeters(value):
-    return value / TIME_DISTANCE_CONVERSION_FACTOR
-
-
-def milliseconds_to_centimeters_array(array):
-    return map(lambda value: milliseconds_to_centimeters(value), array)
-
-
 def normalise():
     last_sample_array = None
     should_normalise = True
@@ -93,7 +85,7 @@ def get_input_array():
         line1.extend(line2)
         line = line1
 
-        return milliseconds_to_centimeters_array(line)
+        return util.milliseconds_to_centimeters_array(line)
 
 
 def loop():

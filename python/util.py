@@ -74,5 +74,13 @@ def timeout(timeout):
     return deco
     
     
+def milliseconds_to_centimeters(value):
+    return value / TIME_DISTANCE_CONVERSION_FACTOR
+
+
+def milliseconds_to_centimeters_array(array):
+    return map(lambda value: milliseconds_to_centimeters(value), array)
+    
+    
 if __name__=="__main__":
     print get_arduino_port()
