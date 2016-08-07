@@ -52,10 +52,10 @@ KLAXON_MIXDOWN_KLAXON2 = "KLAXON_MIXDOWN_KLAXON2.wav"
 KLAXON_MIXDOWN_KLAXON3 = "KLAXON_MIXDOWN_KLAXON3.wav"
 KLAXON_MIXDOWN_KLAXON4 = "KLAXON_MIXDOWN_KLAXON4.wav"
 
-KOTO_A = "KOTO_A"
-KOTO_B = "KOTO_B"
-KOTO_C = "KOTO_C"
-KOTO_D = "KOTO_D"
+KOTO_A = "KOTO_A.wav"
+KOTO_B = "KOTO_B.wav"
+KOTO_C = "KOTO_C.wav"
+KOTO_D = "KOTO_D.wav"
 
 afternoon = [
     A_FAR_Master,
@@ -101,11 +101,11 @@ dir = os.path.dirname(__file__)
 
 
 def play_track(track_name, number_of_channels):
-    audio_samples = audio_controller.track_dict[track_name]
+    audio_samples = track_dict[track_name]
 
     for n in range(0, number_of_channels):
         print "Playing {}".format(audio_samples[n])
-        audio_controller.loop_wav_on_new_thread(audio_samples[n], number_of_channels)
+        loop_wav_on_new_thread(audio_samples[n], number_of_channels)
 
 
 # logging.basicConfig(level=logging.DEBUG)
