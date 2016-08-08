@@ -116,7 +116,8 @@ track_dict = {"afternoon": afternoon,
               "evening": evening,
               "night": night,
               "koto": koto,
-              "white": white}
+              "white": white,
+              "klaxon": klaxon}
 
 
 # Instantiate PyAudio.
