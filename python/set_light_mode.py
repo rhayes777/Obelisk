@@ -1,8 +1,8 @@
 import sys
-import util
+import Arduino
 
 
-arduinos = util.get_arduinos()
+arduinos = Arduino.get_all()
 
 def set_light_mode(light_mode="1"):
     for arduino in arduinos:

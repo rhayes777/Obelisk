@@ -74,3 +74,7 @@ class Arduino:
     def set_light_modes_by_volumes(self, volumes):
         self.set_light_modes(map(lambda volume: int(round(volume * 9)), volumes))
         
+
+def get_all():
+    return map(lambda port: Arduino(port), util.get_arduino_ports())
+        
