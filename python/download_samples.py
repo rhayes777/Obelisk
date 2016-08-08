@@ -8,7 +8,7 @@ def download_samples():
     data = u.read()
     u.close()
      
-    with open([filename], "wb") as f:
+    with open(filename, "wb") as f:
         f.write(data)
     
     
