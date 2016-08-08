@@ -211,7 +211,6 @@ class Loop:
                     loop_number += 1
                     if loop_number == self.number_of_times_to_loop:
                         should_play = False
-                    print loop_number
                 wf.rewind()
                 data = wf.readframes(self.chunk_size)
         
