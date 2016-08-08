@@ -1,0 +1,8 @@
+01:00 - music off
+07:00 - lights off
+10:00 - morning track / first klaxon
+14:00 - afternoon track
+17:00 - evening track
+19:00 - lights on
+21:00 - night track
+24:00 - last klaxon
