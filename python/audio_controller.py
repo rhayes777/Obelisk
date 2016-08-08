@@ -104,6 +104,13 @@ white = [
     WHITE_sitar
 ]
 
+klaxon = [
+    KLAXON_MIXDOWN_KLAXON1,
+    KLAXON_MIXDOWN_KLAXON2,
+    KLAXON_MIXDOWN_KLAXON3,
+    KLAXON_MIXDOWN_KLAXON4
+]
+
 
 track_dict = {"afternoon": afternoon,
               "evening": evening,
