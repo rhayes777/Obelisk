@@ -7,7 +7,6 @@ import sys
 import audio_controller
 from operator import add
 import util
-from arduino import Arduino
 
 ##logging.basicConfig(level=logging.DEBUG, filename='main.log')
 
@@ -68,13 +67,8 @@ def play(track_name="evening"):
 
 def setup(track_name):
     audio_controller.play_track(track_name, INPUT_ARRAY_SIZE)
-        
     global arduino1, arduino2
-    ports = util.get_arduino_ports()
-    arduino1 = Arduino(ports[0])
-    arduino2 = Arduino(ports[1])
-    
-#     normalise()
+    arduino1, arduino2 = util.get_arduinos()
 
 
 def get_input_array():

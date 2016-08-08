@@ -3,6 +3,7 @@ import glob
 import serial
 from threading import Thread
 import functools
+import Arduino
 
 
 def serial_ports():
@@ -72,6 +73,10 @@ def timeout(timeout):
             return ret
         return wrapper
     return deco
+    
+    
+def get_arduinos():
+    return map(lambda port: arduino.Arduino(port), get_arduino_ports())
     
     
 def milliseconds_to_centimeters(value):
