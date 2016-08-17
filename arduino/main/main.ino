@@ -3,10 +3,8 @@
 
 int trigPins[] = {2,3,4,5};
 int echoPins[] = {6,7,8,9};
+int lightPins[] = {10, 11};
 int lightModes[] = {0, 0};
-boolean isOn = true;
-int count = 0;
-int switchLimit = 2000;
 
 int numberOfSensors;
 
@@ -21,20 +19,18 @@ void setup() {
     pinMode(echoPins[n], INPUT);
  }
  pinMode(LEDPin, OUTPUT); // Use LED indicator (if required)
- 
+ pinMode(lightPins[0], OUTPUT);
+ pinMode(lightPins[1], OUTPUT);
 }
 
 void loop() {
   wdt_reset();
-  count++;
-  if (isOn) {
-    digitalWrite(LEDPin, HIGH);
-    delayMicroseconds(lightModes[0]);
-    digitalWrite(LEDPin, LOW);
-  }
-  if (count == switchLimit) {
-    isOn = !isOn;
-    count = 0;
+  for (int n; n < 2; n++) {
+    int pin = lightPins[n];
+    digitalWrite(pin,HIGH);
+    delay(2000);
+    digitalWrite(pin,LOW);           
+    delay(2000);                                      
   }
 }
 
