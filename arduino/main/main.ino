@@ -1,10 +1,14 @@
 #define LEDPin 13 // Onboard LED
+#define LIGHT_MODE_OFF 0
+#define LIGHT_MODE_ON 1
 #include <avr/wdt.h>
 
 int trigPins[] = {2,3,4,5};
 int echoPins[] = {6,7,8,9};
 int lightPins[] = {10, 11};
 int lightModes[] = {0, 0};
+boolean isLightOnArray[] = {false, false};
+int countArray[] = {0, 0};
 
 int numberOfSensors;
 
@@ -25,13 +29,28 @@ void setup() {
 
 void loop() {
   wdt_reset();
+  
   for (int n; n < 2; n++) {
+    countArray[n] = countArray[n] + 1;
     int pin = lightPins[n];
-    digitalWrite(pin,HIGH);
-    delay(2000);
-    digitalWrite(pin,LOW);           
-    delay(2000);                                      
+    int lightMode = lightModes[n];
+    int limit = 2 * lightMode;
+    if (lightMode != LIGHT_MODE_OFF) { 
+      if (countArray[n] > limit && !isLightOnArray[n]) {
+        digitalWrite(pin,HIGH);
+        countArray[n] = 0;
+        isLightOnArray[n] = true;
+      }
+    }
+    if (lightMode != LIGHT_MODE_ON) {
+      if (countArray[n] > limit && isLightOnArray[n]) {
+        digitalWrite(pin,LOW);
+        countArray[n] = 0;
+        isLightOnArray[n] = false;
+      }
+    }                                      
   }
+  delay(100);
 }
 
 void serialEvent() {
