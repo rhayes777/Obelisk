@@ -37,14 +37,14 @@ void loop() {
     int limit = lightMode;
     if (lightMode != LIGHT_MODE_OFF) { 
       if (countArray[n] > limit && !isLightOnArray[n]) {
-        digitalWrite(pin,HIGH);
+        digitalWrite(pin,LOW);
         countArray[n] = 0;
         isLightOnArray[n] = true;
       }
     }
     if (lightMode != LIGHT_MODE_ON) {
       if (countArray[n] > limit && isLightOnArray[n]) {
-        digitalWrite(pin,LOW);
+        digitalWrite(pin,HIGH);
         countArray[n] = 0;
         isLightOnArray[n] = false;
       }

@@ -19,10 +19,10 @@ def play_moment(moment):
 def play_klaxon(klaxon_name=audio_controller.KLAXON_MIXDOWN_KLAXON1):
     audio_controller.loop_wav_on_new_thread(klaxon_name, no_of_times_to_loop=1)
     
-    pattern = [[0, 1, 1, 1],
-               [1, 0, 1, 1],
-               [1, 1, 0, 1],
-               [1, 1, 1, 0]]
+    pattern = [[1, 0, 0, 0],
+               [0, 1, 0, 0],
+               [0, 0, 1, 0],
+               [0, 0, 0, 1]]
     
     moment_no = 0 
     while True:
@@ -30,7 +30,7 @@ def play_klaxon(klaxon_name=audio_controller.KLAXON_MIXDOWN_KLAXON1):
         moment_no += 1
         if moment_no > len(pattern) - 1:
             moment_no = 0
-        sleep(0.1)
+        sleep(0.25)
             
             
     
