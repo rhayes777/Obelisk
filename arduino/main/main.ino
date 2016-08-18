@@ -34,7 +34,7 @@ void loop() {
     countArray[n] = countArray[n] + 1;
     int pin = lightPins[n];
     int lightMode = lightModes[n];
-    int limit = 2 * lightMode;
+    int limit = lightMode;
     if (lightMode != LIGHT_MODE_OFF) { 
       if (countArray[n] > limit && !isLightOnArray[n]) {
         digitalWrite(pin,HIGH);
@@ -51,7 +51,7 @@ void loop() {
     }                                      
   }
   wdt_reset();
-  delay(100);
+  delay(50);
 }
 
 void serialEvent() {
