@@ -14,7 +14,7 @@ int numberOfSensors;
 
 void setup() {
     Serial.begin(9600);
-    wdt_enable(WDTO_1S);
+//    wdt_enable(WDTO_1S);
  
     numberOfSensors = sizeof(trigPins)/sizeof(int);
 
@@ -28,7 +28,7 @@ void setup() {
 }
 
 void loop() {
-  wdt_reset();
+//  wdt_reset();
   
   for (int n; n < 2; n++) {
     countArray[n] = countArray[n] + 1;
