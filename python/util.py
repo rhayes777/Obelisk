@@ -4,6 +4,8 @@ import serial
 from threading import Thread
 import functools
 
+TIME_DISTANCE_CONVERSION_FACTOR = 58.138
+
 
 def serial_ports():
     """ Lists serial port names

@@ -7,12 +7,12 @@ import sys
 import audio_controller
 from operator import add
 import util
+import arduino 
 
 ##logging.basicConfig(level=logging.DEBUG, filename='main.log')
 
 MAX_DISTANCE = 300
 CLOSE_DISTANCE = 100
-TIME_DISTANCE_CONVERSION_FACTOR = 58.138
 
 SAMPLE_SIZE = 5
 
@@ -68,7 +68,7 @@ def play(track_name="evening"):
 def setup(track_name):
     audio_controller.play_track(track_name, INPUT_ARRAY_SIZE)
     global arduino1, arduino2
-    arduino1, arduino2 = util.get_arduinos()
+    arduino1, arduino2 = arduino.get_all()
 
 
 def get_input_array():
