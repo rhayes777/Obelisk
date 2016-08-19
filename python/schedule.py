@@ -33,6 +33,7 @@ class LightsOnAction(Action):
         super(LightsOnAction, self).__init__(MUSIC_OFF, LIGHTS_OFF)
         
     def start(self):
+        logging.info("starting LightsOnAction")
         set_light_mode.set_light_mode(set_light_mode.ON)
         
         
@@ -42,6 +43,7 @@ class LightsOffAction(Action):
         super(LightsOffAction, self).__init__(LIGHTS_OFF, MORNING)
         
     def start(self):
+        logging.info("starting LightsOffAction")
         set_light_mode.set_light_mode(set_light_mode.OFF)
         
 
@@ -51,6 +53,7 @@ class MorningAction(Action):
         super(MorningAction, self).__init__(MORNING, AFTERNOON)
         
     def start(self):
+        logging.info("starting MorningAction")
         play_klaxon()
         main.play("morning", default_light_mode=set_light_mode.OFF)
         
@@ -61,6 +64,7 @@ class AfternoonAction(Action):
         super(AfternoonAction, self).__init__(AFTERNOON, EVENING)
         
     def start(self):
+        logging.info("starting AfternoonAction")
         play_klaxon()
         main.play("afternoon", default_light_mode=set_light_mode.OFF)
         
@@ -71,6 +75,7 @@ class EveningAction(Action):
         super(EveningAction, self).__init__(EVENING, NIGHT)
         
     def start(self):
+        logging.info("starting EveningAction")
         play_klaxon()
         main.play("evening")
         
@@ -81,6 +86,7 @@ class NightAction(Action):
         super(NightAction, self).__init__(NIGHT, MUSIC_OFF)
         
     def start(self):
+        logging.info("starting NightAction")
         play_klaxon()
         main.play("night")
 
