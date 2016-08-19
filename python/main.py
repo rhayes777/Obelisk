@@ -75,7 +75,8 @@ def play(track_name="evening", default_light_mode=None):
 
 
 def setup(track_name, default_light_mode):
-    audio_controller.play_track(track_name, INPUT_ARRAY_SIZE + 1)
+    audio_controller.play_track(track_name, INPUT_ARRAY_SIZE)
+    audio_controller.loop_wav_on_new_thread(audio_controller.track_dict[track_name][INPUT_ARRAY_SIZE], fade_out_rate=AMBIENT_FADE_OUT_RATE, no_of_queues_required=1)
     global arduino1, arduino2
     arduino1, arduino2 = arduino.get_all()
     if default_light_mode is not None:
