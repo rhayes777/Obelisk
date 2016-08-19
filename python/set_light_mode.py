@@ -5,9 +5,8 @@ import arduino
 ON = 1
 OFF = 0
 
-arduinos = arduino.get_all()
-
 def set_light_mode(light_mode=ON):
+    arduinos = arduino.get_all()
     light_mode = str(light_mode)
     for arduino in arduinos:
         arduino.set_light_modes([light_mode, light_mode])
