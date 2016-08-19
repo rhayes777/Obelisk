@@ -1,11 +1,11 @@
 import sys
-import Arduino
+import arduino
 
 
 ON = 1
 OFF = 2
 
-arduinos = Arduino.get_all()
+arduinos = arduino.get_all()
 
 def set_light_mode(light_mode=ON):
     light_mode = str(light_mode)
