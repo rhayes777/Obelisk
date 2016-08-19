@@ -31,9 +31,18 @@ void loop() {
   wdt_reset();
   
   for (int n; n < 2; n++) {
+   
     countArray[n] = countArray[n] + 1;
     int pin = lightPins[n];
     int lightMode = lightModes[n];
+
+    if (lightMode == LIGHT_MODE_OFF) {
+      digitalWrite(pin,HIGH);
+    }
+    if (lightMode == LIGHT_MODE_ON) {
+      digitalWrite(pin,LOW);
+    }
+    
     int limit = lightMode;
     if (lightMode != LIGHT_MODE_OFF) { 
       if (countArray[n] > limit && !isLightOnArray[n]) {

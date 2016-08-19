@@ -2,6 +2,7 @@ import main
 from play_klaxon import play_klaxon
 import set_light_mode
 from datetime import datetime
+import logging
 
 
 MUSIC_OFF = 0
@@ -51,7 +52,7 @@ class MorningAction(Action):
         
     def start(self):
         play_klaxon()
-        main.play("morning")
+        main.play("morning", default_light_mode=set_light_mode.OFF)
         
 
 class AfternoonAction(Action):
@@ -61,7 +62,7 @@ class AfternoonAction(Action):
         
     def start(self):
         play_klaxon()
-        main.play("afternoon", should_use_lights=False)
+        main.play("afternoon", default_light_mode=set_light_mode.OFF)
         
         
 class EveningAction(Action):
@@ -71,7 +72,7 @@ class EveningAction(Action):
         
     def start(self):
         play_klaxon()
-        main.play("evening", should_use_lights=True)
+        main.play("evening")
         
         
 class NightAction(Action):
@@ -81,7 +82,7 @@ class NightAction(Action):
         
     def start(self):
         play_klaxon()
-        main.play("night", should_use_lights=True)
+        main.play("night")
 
 
 actions = [LightsOnAction(), LightsOffAction(), MorningAction(), AfternoonAction(), EveningAction(), NightAction()]
@@ -96,4 +97,5 @@ def take_action():
             
             
 if __name__=="__main__":
+    logging.basicConfig(level=logging.INFO)
     take_action()

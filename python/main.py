@@ -58,17 +58,25 @@ arduino1 = None
 arduino2 = None
 
 
-def play(track_name="evening", should_use_lights=True):
-    setup(track_name)
+def play(track_name="evening", default_light_mode=None):
+    setup(track_name, default_light_mode)
     print "starting read loop"
     while True:
-        loop(should_use_lights)
+        loop(default_light_mode)
 
 
-def setup(track_name):
+def setup(track_name, default_light_mode):
     audio_controller.play_track(track_name, INPUT_ARRAY_SIZE)
     global arduino1, arduino2
     arduino1, arduino2 = arduino.get_all()
+    if default_light_mode is not None:
+        print "print setting default light mode"
+        sleep(0.1)
+        arduino1.set_light_modes([2, 2])
+        arduino2.set_light_modes([2, 2])
+        sleep(0.1)
+        arduino1.set_light_modes([default_light_mode, default_light_mode])
+        arduino2.set_light_modes([default_light_mode, default_light_mode])
 
 
 def get_input_array():
@@ -82,7 +90,7 @@ def get_input_array():
         return util.milliseconds_to_centimeters_array(line)
 
 
-def loop(should_use_lights):
+def loop(default_light_mode):
 
     input_array = get_input_array()
     if input_array:

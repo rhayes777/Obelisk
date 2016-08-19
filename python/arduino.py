@@ -57,7 +57,7 @@ class Arduino:
         attempt_count = 0
         while not array:
             attempt_count += 1
-            self.write("-1")
+            self.write("-")
             time.sleep(MEASUREMENT_PAUSE)
             try:
                 array = self.read_array()
