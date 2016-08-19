@@ -12,6 +12,31 @@ arduino1, arduino2 = arduino.get_all()
 
 FLASHING_PERIOD = 60
 
+patterns = [[
+            [1, 0, 0, 0],
+            [0, 1, 0, 0],
+            [0, 0, 1, 0],
+            [0, 0, 0, 1]
+            ],
+            [
+            [1, 0, 1, 0],
+            [0, 1, 0, 1],
+            [0, 0, 1, 0],
+            [0, 0, 0, 1]
+            ],
+            [
+            [1, 0, 0, 0],
+            [0, 1, 0, 0],
+            [0, 0, 1, 0],
+            [0, 0, 0, 1],
+            [1, 0, 0, 1],
+            [0, 1, 0, 1],
+            [0, 0, 1, 1],
+            [1, 0, 1, 1],
+            [0, 1, 1, 1],
+            [1, 1, 1, 1]
+            ]]
+
 
 def play_moment(moment):
     arduino1.set_light_modes(moment[:2])
@@ -23,10 +48,7 @@ def play_klaxon(klaxon_name=None):
         klaxon_name = audio_controller.klaxon[randint(0,3)]
     audio_controller.loop_wav_on_new_thread(klaxon_name, no_of_times_to_loop=1)
     
-    pattern = [[1, 0, 0, 0],
-               [0, 1, 0, 0],
-               [0, 0, 1, 0],
-               [0, 0, 0, 1]]
+    pattern = patterns[randint(0, len(patterns) - 1)]
     
     moment_no = 0 
     start = time.time()
