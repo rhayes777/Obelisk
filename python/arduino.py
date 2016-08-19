@@ -15,7 +15,7 @@ class Arduino:
     def __init__(self, port):
         self.port = port
         self.ser = serial.Serial(port, 9600)
-        self.write("-1")
+        self.write("-")
         self.light_modes = [0, 0]
         
     def write(self, message):
@@ -72,7 +72,7 @@ class Arduino:
         logging.debug("Writing light modes {} to {}".format(to_write, self.port))
         
     def set_light_modes_by_volumes(self, volumes):
-        light_modes = map(lambda volume: 10 - int(round(volume * 8)), volumes)
+        light_modes = map(lambda volume: 10 - int(round(volume * 7)), volumes)
         light_modes = map(lambda light_mode: 1 if light_mode == 10 else light_mode, light_modes)
         self.set_light_modes(light_modes)
         

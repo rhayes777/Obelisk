@@ -3,7 +3,7 @@ import arduino
 
 
 ON = 1
-OFF = 2
+OFF = 0
 
 arduinos = arduino.get_all()
 

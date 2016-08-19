@@ -8,6 +8,9 @@ import audio_controller
 from operator import add
 import util
 import arduino 
+import set_light_mode
+
+from time import sleep
 
 ##logging.basicConfig(level=logging.DEBUG, filename='main.log')
 
@@ -70,11 +73,6 @@ def setup(track_name, default_light_mode):
     global arduino1, arduino2
     arduino1, arduino2 = arduino.get_all()
     if default_light_mode is not None:
-        print "print setting default light mode"
-        sleep(0.1)
-        arduino1.set_light_modes([2, 2])
-        arduino2.set_light_modes([2, 2])
-        sleep(0.1)
         arduino1.set_light_modes([default_light_mode, default_light_mode])
         arduino2.set_light_modes([default_light_mode, default_light_mode])
 
@@ -121,14 +119,14 @@ def loop(default_light_mode):
             logging.info("sensor {} at {}".format(n, distance))
             audio_controller.queues[n].put(volume_far)
             volumes[n] = volume_far
-
-        if should_use_lights:
+        
+        if default_light_mode is None:
             arduino1.set_light_modes_by_volumes(volumes[:2])
             arduino2.set_light_modes_by_volumes(volumes[-2:])
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO)
+    logging.basicConfig(level=logging.DEBUG)
     if len(sys.argv) > 1:
         play(sys.argv[1])
     else:
