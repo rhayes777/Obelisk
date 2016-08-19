@@ -11,15 +11,6 @@ import os
 
 # http://playground.arduino.cc/Interfacing/Python
 
-ACRO_PAD_C = "Acro_Pad_C.wav"
-ORION_PAD = "Orion_Pad.wav"
-LODE_PAD = "Lode_Pad.wav"
-SPACEBEE_PAD = "Spacebee_Pad.wav"
-SPOOKT_PAD_C = "Spooky_Pad_C.wav"
-SYTHEX_PAD = "Synthex_Pad.wav"
-WAVEDRIFT_PAD_C = "Wavedrift_Pad_C.wav"
-ZPLANE_PAD = "Zplane_Pad.wav"
-
 A_FAR_Master  = "A_FAR_Master.wav"
 A_NEAR_Master = "A_NEAR_Master.wav"
 B_FAR_Master  = "B_FAR_Master.wav"
