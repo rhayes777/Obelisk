@@ -87,7 +87,7 @@ queues = []
 number_of_ready_loops = 0
 
 CHUNK_SIZE = 512
-VOLUME_DECAY_RATE = 0.04
+FADE_OUT_RATE = 0.04
 
 dir = os.path.dirname(__file__)
 
@@ -160,7 +160,7 @@ class Loop:
                 if new_volume >= self.volume:
                     self.volume = new_volume
                 else:
-                    self.volume -= VOLUME_DECAY_RATE
+                    self.volume -= FADE_OUT_RATE
                     if self.volume < 0:
                         self.volume = 0
                 
