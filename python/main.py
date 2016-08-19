@@ -23,6 +23,8 @@ INPUT_ARRAY_SIZE = 4
 
 NORMALISING_THRESHOLD = 0.01
 
+AMBIENT_LIMIT = 0.1
+
 max_distance_array = INPUT_ARRAY_SIZE * [MAX_DISTANCE]
 
 sample_arrays = []
@@ -69,7 +71,7 @@ def play(track_name="evening", default_light_mode=None):
 
 
 def setup(track_name, default_light_mode):
-    audio_controller.play_track(track_name, INPUT_ARRAY_SIZE)
+    audio_controller.play_track(track_name, INPUT_ARRAY_SIZE + 1)
     global arduino1, arduino2
     arduino1, arduino2 = arduino.get_all()
     if default_light_mode is not None:
@@ -123,6 +125,10 @@ def loop(default_light_mode):
         if default_light_mode is None:
             arduino1.set_light_modes_by_volumes(volumes[:2])
             arduino2.set_light_modes_by_volumes(volumes[-2:])
+            
+        max_volume = max(volumes)
+
+        audio_controller.queues[INPUT_ARRAY_SIZE].put(0 if max_volume > AMBIENT_LIMIT else 1)
 
 
 if __name__ == "__main__":

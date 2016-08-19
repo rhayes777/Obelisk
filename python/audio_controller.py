@@ -69,7 +69,7 @@ klaxon = [
 
 
 track_dict = {"morning": white,
-              "afternoon": afternoon,
+              "afternoon": track3,
               "evening": koto,
               "night": track3,
               "koto": koto,
@@ -96,7 +96,7 @@ def play_track(track_name, number_of_channels):
     audio_samples = track_dict[track_name]
 
     for n in range(0, number_of_channels):
-        print "Playing {}".format(audio_samples[n])
+        logging.info("Playing {}".format(audio_samples[n]))
         loop_wav_on_new_thread(audio_samples[n], number_of_channels)
 
 
@@ -199,10 +199,10 @@ def loop_wav_on_new_thread(name, no_of_queues_required=0, no_of_times_to_loop=-1
 def loop_wav(name, no_of_queues_required, no_of_times_to_loop):
     loop = Loop(name, no_of_queues_required, number_of_times_to_loop=no_of_times_to_loop)
     if no_of_queues_required:
-        print "appending queue to queues"
+        logging.debug("appending queue to queues")
         queues.append(loop.queue)
-        print "new size = {}".format(len(queues))
-    print "starting loop..."
+        logging.debug("new size = {}".format(len(queues)))
+    logging.debug("starting loop...")
     loop.start()
     
     
