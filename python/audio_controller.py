@@ -103,7 +103,7 @@ klaxon = [
 ]
 
 
-track_dict = {"morning": white
+track_dict = {"morning": white,
               "afternoon": afternoon,
               "evening": koto,
               "night": track3,
