@@ -63,7 +63,7 @@ arduino2 = None
 
 def play(track_name="evening", default_light_mode=None):
     setup(track_name, default_light_mode)
-    print "starting read loop"
+    logging.info("starting read loop")
     while True:
         loop(default_light_mode)
 
