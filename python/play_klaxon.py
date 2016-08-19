@@ -37,6 +37,9 @@ def play_klaxon(klaxon_name=None):
             moment_no = 0
         sleep(0.25)
         seconds_elapsed = time.time() - start
+    
+    arduino1.ser.close()    
+    arduino2.ser.close()
 
     
 if __name__=="__main__":
