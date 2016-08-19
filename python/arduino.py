@@ -8,7 +8,7 @@ import util
 
 MEASUREMENT_PAUSE = 0.1  # s
 
-logging.basicConfig(level=logging.DEBUG)
+# logging.basicConfig(level=logging.DEBUG)
 
 class Arduino:
     
@@ -72,7 +72,9 @@ class Arduino:
         logging.debug("Writing light modes {} to {}".format(to_write, self.port))
         
     def set_light_modes_by_volumes(self, volumes):
-        self.set_light_modes(map(lambda volume: int(round(volume * 7)) + 2, volumes))
+        light_modes = map(lambda volume: 10 - int(round(volume * 8)), volumes)
+        light_modes = map(lambda light_mode: 1 if light_mode == 10 else light_mode, light_modes)
+        self.set_light_modes(light_modes)
         
 
 def get_all():
