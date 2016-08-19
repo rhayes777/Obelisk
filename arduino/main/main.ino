@@ -94,7 +94,6 @@ String recordDataString() {
     
     if (input < value || value == -1) {
       value = input;
-      
     }
     if (pairNumber == 1) {
       result += String(value) + (n < numberOfSensors - 1 ? "," : "]");
