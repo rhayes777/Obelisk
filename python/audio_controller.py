@@ -11,33 +11,6 @@ import os
 
 # http://playground.arduino.cc/Interfacing/Python
 
-A_FAR_Master  = "A_FAR_Master.wav"
-A_NEAR_Master = "A_NEAR_Master.wav"
-B_FAR_Master  = "B_FAR_Master.wav"
-B_NEAR_Master = "B_NEAR_Master.wav"
-C_FAR_Master  = "C_FAR_Master.wav"
-C_NEAR_Master = "C_NEAR_Master.wav"
-D_FAR_Master  = "D_FAR_Master.wav"
-D_NEAR_Master = "D_NEAR_Master.wav"
-
-TRACK2_1A = "TRACK2_1A.wav"
-TRACK2_1B = "TRACK2_1B.wav"
-TRACK2_2A = "TRACK2_2A.wav"
-TRACK2_2B = "TRACK2_2B.wav"
-TRACK2_3A = "TRACK2_3A.wav"
-TRACK2_3B = "TRACK2_3B.wav"
-TRACK2_4A = "TRACK2_4A.wav"
-TRACK2_4B = "TRACK2_4B.wav"
-
-TRACK2_1A_2 = "TRACK2_1A_2.wav"
-TRACK2_1B_2 = "TRACK2_1B_2.wav"
-TRACK2_2A_2 = "TRACK2_2A_2.wav"
-TRACK2_2B_2 = "TRACK2_2B_2.wav"
-TRACK2_3A_2 = "TRACK2_3A_2.wav"
-TRACK2_3B_2 = "TRACK2_3B_2.wav"
-TRACK2_4A_2 = "TRACK2_4A_2.wav"
-TRACK2_4B_2 = "TRACK2_4B_2.wav"
-
 TRACK3_drums = "TRACK3_drums.wav"
 TRACK3_bass = "TRACK3_bass.wav"
 TRACK3_guitar_keys = "TRACK3_guitar_keys.wav"
@@ -58,41 +31,33 @@ KOTO_lead = "KOTO_lead.wav"
 KOTO_inst = "KOTO_inst.wav"
 KOTO_drums = "KOTO_drums.wav"
 
-afternoon = [
-    A_FAR_Master,
-    B_FAR_Master,
-    C_FAR_Master,
-    D_FAR_Master
+LONG_AMBIENT_PART1 = "LONG_AMBIENT_PART1.wav"
+LONG_AMBIENT_PART2 = "LONG_AMBIENT_PART2.wav"
+LONG_AMBIENT_PART3 = "LONG_AMBIENT_PART3.wav"
 
-]
-
-evening = [
-    TRACK2_1A,
-    TRACK2_1B,
-    TRACK2_3B,
-    TRACK2_4B
-
-]
 
 track3 = [
     TRACK3_drums,
     TRACK3_bass,
     TRACK3_guitar_keys,
-    TRACK3_noises
+    TRACK3_noises,
+    LONG_AMBIENT_PART1
 ]
 
 koto = [
     KOTO_bass,
     KOTO_lead,
     KOTO_inst,
-    KOTO_drums
+    KOTO_drums,
+    LONG_AMBIENT_PART2
 ]
 
 white = [
     WHITE_atmos,
     WHITE_guitar,
     WHITE_percnsub,
-    WHITE_sitar
+    WHITE_sitar,
+    LONG_AMBIENT_PART3
 ]
 
 klaxon = [
