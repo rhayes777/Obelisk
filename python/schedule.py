@@ -12,18 +12,14 @@ EVENING = 17
 NIGHT = 21
 
 
-class Action:
+class Action(object):
     
     def __init__(self, start_hour, end_hour):
         self.start_hour = start_hour
         self.end_hour = end_hour
-        self.functions = functions
-        
         
     def is_time_within_range(self, time):
-        if time.hour > self.start_hour and time.hour < self.end_hour:
-            return time.minute > self.start_minute and time.minute < self.end_minute
-        return False
+        return time.hour > self.start_hour and time.hour < self.end_hour
         
     def start(self):
         print "Action class is abstract. function 'start' should be overridden"
@@ -33,7 +29,7 @@ class Action:
 class LightsOnAction(Action):
     
     def __init__(self):
-        super(Action, self).__init__(MUSIC_OFF, LIGHTS_OFF)
+        super(LightsOnAction, self).__init__(MUSIC_OFF, LIGHTS_OFF)
         
     def start(self):
         set_light_mode.set_light_mode(set_light_mode.ON)
@@ -42,7 +38,7 @@ class LightsOnAction(Action):
 class LightsOffAction(Action):
     
     def __init__(self):
-        super(Action, self).__init__(LIGHTS_OFF, MORNING)
+        super(LightsOffAction, self).__init__(LIGHTS_OFF, MORNING)
         
     def start(self):
         set_light_mode.set_light_mode(set_light_mode.OFF)
@@ -51,7 +47,7 @@ class LightsOffAction(Action):
 class MorningAction(Action):
     
     def __init__(self):
-        super(Action, self).__init__(MORNING, AFTERNOON)
+        super(MorningAction, self).__init__(MORNING, AFTERNOON)
         
     def start(self):
         play_klaxon()
@@ -61,7 +57,7 @@ class MorningAction(Action):
 class AfternoonAction(Action):
     
     def __init__(self):
-        super(Action, self).__init__(AFTERNOON, EVENING)
+        super(AfternoonAction, self).__init__(AFTERNOON, EVENING)
         
     def start(self):
         play_klaxon()
@@ -71,7 +67,7 @@ class AfternoonAction(Action):
 class EveningAction(Action):
     
     def __init__(self):
-        super(Action, self).__init__(EVENING, NIGHT)
+        super(EveningAction, self).__init__(EVENING, NIGHT)
         
     def start(self):
         play_klaxon()
@@ -81,7 +77,7 @@ class EveningAction(Action):
 class NightAction(Action):
     
     def __init__(self):
-        super(Action, self).__init__(NIGHT, MUSIC_OFF)
+        super(NightAction, self).__init__(NIGHT, MUSIC_OFF)
         
     def start(self):
         play_klaxon()

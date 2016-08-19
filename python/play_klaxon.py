@@ -5,6 +5,7 @@ import audio_controller
 import sys
 from time import sleep
 import time
+from random import randint
 
 
 arduino1, arduino2 = arduino.get_all()
@@ -19,7 +20,7 @@ def play_moment(moment):
 
 def play_klaxon(klaxon_name=None):
     if klaxon_name is None:
-        klaxon_name = audio_controller.klaxon[int(round(volume * 3))]
+        klaxon_name = audio_controller.klaxon[randint(0,3)]
     audio_controller.loop_wav_on_new_thread(klaxon_name, no_of_times_to_loop=1)
     
     pattern = [[1, 0, 0, 0],
