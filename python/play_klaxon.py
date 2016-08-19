@@ -28,15 +28,16 @@ def play_klaxon(klaxon_name=None):
                [0, 0, 0, 1]]
     
     moment_no = 0 
-    while True:
+    start = time.time()
+    seconds_elapsed = 0
+    while seconds_elapsed < FLASHING_PERIOD:
         play_moment(pattern[moment_no])
         moment_no += 1
         if moment_no > len(pattern) - 1:
             moment_no = 0
         sleep(0.25)
-            
-            
-    
+        seconds_elapsed = time.time() - start
+
     
 if __name__=="__main__":
     if len(sys.argv) > 1:
