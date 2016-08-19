@@ -4,8 +4,8 @@ import set_light_mode
 from datetime import datetime
 import logging
 
-
-MUSIC_OFF = 0
+MUSIC_OFF_LOW = 0
+MUSIC_OFF_HIGH = 24
 LIGHTS_OFF = 7
 MORNING = 11
 AFTERNOON = 14
@@ -30,7 +30,7 @@ class Action(object):
 class LightsOnAction(Action):
     
     def __init__(self):
-        super(LightsOnAction, self).__init__(MUSIC_OFF, LIGHTS_OFF)
+        super(LightsOnAction, self).__init__(MUSIC_OFF_LOW, LIGHTS_OFF)
         
     def start(self):
         logging.info("starting LightsOnAction")
@@ -83,7 +83,7 @@ class EveningAction(Action):
 class NightAction(Action):
     
     def __init__(self):
-        super(NightAction, self).__init__(NIGHT, MUSIC_OFF)
+        super(NightAction, self).__init__(NIGHT, MUSIC_OFF_HIGH)
         
     def start(self):
         logging.info("starting NightAction")
