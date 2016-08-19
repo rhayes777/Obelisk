@@ -24,8 +24,12 @@ INPUT_ARRAY_SIZE = 4
 NORMALISING_THRESHOLD = 0.01
 
 AMBIENT_LIMIT = 0.1
+AMBIENT_FADE_IN_RATE = 0.1
+AMBIENT_FADE_OUT_RATE = 0.1
 
 max_distance_array = INPUT_ARRAY_SIZE * [MAX_DISTANCE]
+
+ambient_volume = 1
 
 sample_arrays = []
 for n in range(0, SAMPLE_SIZE):
@@ -91,6 +95,7 @@ def get_input_array():
 
 
 def loop(default_light_mode):
+    global ambient_volume
 
     input_array = get_input_array()
     if input_array:
@@ -125,10 +130,13 @@ def loop(default_light_mode):
         if default_light_mode is None:
             arduino1.set_light_modes_by_volumes(volumes[:2])
             arduino2.set_light_modes_by_volumes(volumes[-2:])
-            
-        max_volume = max(volumes)
+        
+        if max(volumes) > AMBIENT_LIMIT:
+            ambient_volume = 0
+        else:
+            ambient_volume = ambient_volume + AMBIENT_FADE_IN_RATE
 
-        audio_controller.queues[INPUT_ARRAY_SIZE].put(0 if max_volume > AMBIENT_LIMIT else 1)
+        audio_controller.queues[INPUT_ARRAY_SIZE].put(ambient_volume)        
 
 
 if __name__ == "__main__":
