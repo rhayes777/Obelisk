@@ -4,19 +4,22 @@ import arduino
 import audio_controller
 import sys
 from time import sleep
+import time
 
 
 arduino1, arduino2 = arduino.get_all()
 
+FLASHING_PERIOD = 60
+
 
 def play_moment(moment):
-    print moment
     arduino1.set_light_modes(moment[:2])
     arduino2.set_light_modes(moment[-2:])
 
 
-
-def play_klaxon(klaxon_name=audio_controller.KLAXON_MIXDOWN_KLAXON1):
+def play_klaxon(klaxon_name=None):
+    if klaxon_name is None:
+        klaxon_name = audio_controller.klaxon[int(round(volume * 3))]
     audio_controller.loop_wav_on_new_thread(klaxon_name, no_of_times_to_loop=1)
     
     pattern = [[1, 0, 0, 0],
