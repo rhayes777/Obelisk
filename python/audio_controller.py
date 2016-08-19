@@ -104,11 +104,12 @@ def play_track(track_name, number_of_channels):
 
 class Loop:
     
-    def __init__(self, wav_filename, no_of_loops_required, chunk_size=CHUNK_SIZE, volume=1, number_of_times_to_loop=-1):
+    def __init__(self, wav_filename, no_of_loops_required, chunk_size=CHUNK_SIZE, volume=1, number_of_times_to_loop=-1, fade_out_rate=FADE_OUT_RATE):
         self.number_of_times_to_loop = number_of_times_to_loop
         self.wav_filename = wav_filename
         self.chunk_size=chunk_size
         self.volume = volume
+        self.fade_out_rate = fade_out_rate
         self.no_of_loops_required = no_of_loops_required
         self.queue = Queue()
 
@@ -160,7 +161,7 @@ class Loop:
                 if new_volume >= self.volume:
                     self.volume = new_volume
                 else:
-                    self.volume -= FADE_OUT_RATE
+                    self.volume -= self.fade_out_rate
                     if self.volume < 0:
                         self.volume = 0
                 
@@ -192,12 +193,12 @@ class Loop:
         logging.debug("{}: {}".format(self.wav_filename, message))    
 
 
-def loop_wav_on_new_thread(name, no_of_queues_required=0, no_of_times_to_loop=-1):
-    t = Thread(target=loop_wav, args=(name, no_of_queues_required, no_of_times_to_loop, ))
+def loop_wav_on_new_thread(name, no_of_queues_required=0, no_of_times_to_loop=-1, fade_out_rate=FADE_OUT_RATE):
+    t = Thread(target=loop_wav, args=(name, no_of_queues_required, no_of_times_to_loop, fade_out_rate, ))
     t.start()
     
-def loop_wav(name, no_of_queues_required, no_of_times_to_loop):
-    loop = Loop(name, no_of_queues_required, number_of_times_to_loop=no_of_times_to_loop)
+def loop_wav(name, no_of_queues_required, no_of_times_to_loop, fade_out_rate):
+    loop = Loop(name, no_of_queues_required, number_of_times_to_loop=no_of_times_to_loop, fade_out_rate=fade_out_rate)
     if no_of_queues_required:
         logging.debug("appending queue to queues")
         queues.append(loop.queue)
