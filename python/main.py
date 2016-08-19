@@ -58,11 +58,11 @@ arduino1 = None
 arduino2 = None
 
 
-def play(track_name="evening"):
+def play(track_name="evening", should_use_lights=True):
     setup(track_name)
     print "starting read loop"
     while True:
-        loop()
+        loop(should_use_lights)
 
 
 def setup(track_name):
@@ -82,7 +82,7 @@ def get_input_array():
         return util.milliseconds_to_centimeters_array(line)
 
 
-def loop():
+def loop(should_use_lights):
 
     input_array = get_input_array()
     if input_array:
@@ -114,8 +114,9 @@ def loop():
             audio_controller.queues[n].put(volume_far)
             volumes[n] = volume_far
 
-        arduino1.set_light_modes_by_volumes(volumes[:2])
-        arduino2.set_light_modes_by_volumes(volumes[-2:])
+        if should_use_lights:
+            arduino1.set_light_modes_by_volumes(volumes[:2])
+            arduino2.set_light_modes_by_volumes(volumes[-2:])
 
 
 if __name__ == "__main__":
