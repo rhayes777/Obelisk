@@ -74,7 +74,7 @@ evening = [
 
 ]
 
-night = [
+track3 = [
     TRACK3_drums,
     TRACK3_bass,
     TRACK3_guitar_keys,
@@ -103,9 +103,10 @@ klaxon = [
 ]
 
 
-track_dict = {"afternoon": afternoon,
-              "evening": evening,
-              "night": night,
+track_dict = {"morning": white
+              "afternoon": afternoon,
+              "evening": koto,
+              "night": track3,
               "koto": koto,
               "white": white,
               "klaxon": klaxon}
