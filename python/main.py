@@ -11,7 +11,7 @@ import arduino
 
 ##logging.basicConfig(level=logging.DEBUG, filename='main.log')
 
-MAX_DISTANCE = 300
+MAX_DISTANCE = 200
 CLOSE_DISTANCE = 100
 
 SAMPLE_SIZE = 5

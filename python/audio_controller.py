@@ -122,7 +122,7 @@ queues = []
 number_of_ready_loops = 0
 
 CHUNK_SIZE = 512
-VOLUME_DECAY_RATE = 0.15
+VOLUME_DECAY_RATE = 0.04
 
 dir = os.path.dirname(__file__)
 
