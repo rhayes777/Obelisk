@@ -135,6 +135,8 @@ def loop(default_light_mode):
             ambient_volume = 0
         else:
             ambient_volume = ambient_volume + AMBIENT_FADE_IN_RATE
+            if ambient_volume > 1:
+                ambient_volume = 1
 
         audio_controller.queues[INPUT_ARRAY_SIZE].put(ambient_volume)        
 
