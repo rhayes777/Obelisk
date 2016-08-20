@@ -20,8 +20,8 @@ class Action(object):
         self.start_hour = start_hour
         self.end_hour = end_hour
         
-    def is_time_within_range(self, time):
-        return time.hour > self.start_hour and time.hour < self.end_hour
+    def is_time_within_range(self, hour):
+        return hour >= self.start_hour and hour < self.end_hour
         
     def start(self):
         print "Action class is abstract. function 'start' should be overridden"
@@ -60,7 +60,7 @@ class MorningAction(Action):
     def start(self):
         logging.info("starting MorningAction")
         play_klaxon()
-        main.play("morning", default_light_mode=set_light_mode.OFF)
+        main.play("morning", default_light_mode=arduino.OFF)
         
 
 class AfternoonAction(Action):
@@ -71,7 +71,7 @@ class AfternoonAction(Action):
     def start(self):
         logging.info("starting AfternoonAction")
         play_klaxon()
-        main.play("afternoon", default_light_mode=set_light_mode.OFF)
+        main.play("afternoon", default_light_mode=arduino.OFF)
         
         
 class EveningAction(Action):
@@ -102,8 +102,9 @@ actions = [LightsOnAction(), LightsOffAction(), MorningAction(), AfternoonAction
 def take_action():
     logging.info('take_action')
     now = datetime.now()
+    hour = now.hour
     for action in actions:
-        if action.is_time_within_range(now):
+        if action.is_time_within_range(hour):
             action.start()
             break
             
