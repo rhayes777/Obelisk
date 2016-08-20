@@ -1,11 +1,12 @@
 import main
 from play_klaxon import play_klaxon
-import set_light_mode
 from datetime import datetime
 import logging
+import arduino
 
 
-MUSIC_OFF = 0
+MUSIC_OFF_LOW = 0
+MUSIC_OFF_HIGH = 24
 LIGHTS_OFF = 7
 MORNING = 11
 AFTERNOON = 14
@@ -30,11 +31,13 @@ class Action(object):
 class LightsOnAction(Action):
     
     def __init__(self):
-        super(LightsOnAction, self).__init__(MUSIC_OFF, LIGHTS_OFF)
+        super(LightsOnAction, self).__init__(MUSIC_OFF_LOW, LIGHTS_OFF)
         
     def start(self):
         logging.info("starting LightsOnAction")
-        set_light_mode.set_light_mode(set_light_mode.ON)
+        arduino1, arduino2 = arduino.get_all()
+        arduino1.set_light_modes([arduino.OFF, arduino.OFF])
+        arduino2.set_light_modes([arduino.OFF, arduino.OFF])
         
         
 class LightsOffAction(Action):
@@ -44,7 +47,9 @@ class LightsOffAction(Action):
         
     def start(self):
         logging.info("starting LightsOffAction")
-        set_light_mode.set_light_mode(set_light_mode.OFF)
+        arduino1, arduino2 = arduino.get_all()
+        arduino1.set_light_modes([arduino.OFF, arduino.OFF])
+        arduino2.set_light_modes([arduino.OFF, arduino.OFF])
         
 
 class MorningAction(Action):
@@ -83,7 +88,7 @@ class EveningAction(Action):
 class NightAction(Action):
     
     def __init__(self):
-        super(NightAction, self).__init__(NIGHT, MUSIC_OFF)
+        super(NightAction, self).__init__(NIGHT, MUSIC_OFF_HIGH)
         
     def start(self):
         logging.info("starting NightAction")
@@ -95,6 +100,7 @@ actions = [LightsOnAction(), LightsOffAction(), MorningAction(), AfternoonAction
 
 
 def take_action():
+    logging.info('take_action')
     now = datetime.now()
     for action in actions:
         if action.is_time_within_range(now):

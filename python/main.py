@@ -8,7 +8,6 @@ import audio_controller
 from operator import add
 import util
 import arduino 
-import set_light_mode
 
 from time import sleep
 
