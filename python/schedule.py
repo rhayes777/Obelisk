@@ -101,19 +101,11 @@ class NightAction(Action):
 
 actions = [LightsOnAction(), LightsOffAction(), MorningAction(), AfternoonAction(), EveningAction(), NightAction()]
 
-MUSIC_OFF_LOW = 0
-MUSIC_OFF_HIGH = 24
-LIGHTS_OFF = 7
-MORNING = 11
-AFTERNOON = 14
-EVENING = 17
-NIGHT = 21
 
 def take_action():
     logging.info('take_action')
     now = datetime.now()
     hour = now.hour
-    hour = MUSIC_OFF_LOW
     for action in actions:
         if action.is_time_within_range(hour):
             action.start()
