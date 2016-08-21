@@ -8,7 +8,6 @@ import audio_controller
 from operator import add
 import util
 import arduino 
-import set_light_mode
 
 from time import sleep
 
@@ -23,7 +22,13 @@ INPUT_ARRAY_SIZE = 4
 
 NORMALISING_THRESHOLD = 0.01
 
+AMBIENT_LIMIT = 0.1
+AMBIENT_FADE_IN_RATE = 0.1
+AMBIENT_FADE_OUT_RATE = 0.1
+
 max_distance_array = INPUT_ARRAY_SIZE * [MAX_DISTANCE]
+
+ambient_volume = 1
 
 sample_arrays = []
 for n in range(0, SAMPLE_SIZE):
@@ -63,13 +68,14 @@ arduino2 = None
 
 def play(track_name="evening", default_light_mode=None):
     setup(track_name, default_light_mode)
-    print "starting read loop"
+    logging.info("starting read loop")
     while True:
         loop(default_light_mode)
 
 
 def setup(track_name, default_light_mode):
     audio_controller.play_track(track_name, INPUT_ARRAY_SIZE)
+    audio_controller.loop_wav_on_new_thread(audio_controller.track_dict[track_name][INPUT_ARRAY_SIZE], fade_out_rate=AMBIENT_FADE_OUT_RATE, no_of_queues_required=1)
     global arduino1, arduino2
     arduino1, arduino2 = arduino.get_all()
     if default_light_mode is not None:
@@ -89,6 +95,7 @@ def get_input_array():
 
 
 def loop(default_light_mode):
+    global ambient_volume
 
     input_array = get_input_array()
     if input_array:
@@ -123,6 +130,15 @@ def loop(default_light_mode):
         if default_light_mode is None:
             arduino1.set_light_modes_by_volumes(volumes[:2])
             arduino2.set_light_modes_by_volumes(volumes[-2:])
+        
+        if max(volumes) > AMBIENT_LIMIT:
+            ambient_volume = 0
+        else:
+            ambient_volume = ambient_volume + AMBIENT_FADE_IN_RATE
+            if ambient_volume > 1:
+                ambient_volume = 1
+
+        audio_controller.queues[INPUT_ARRAY_SIZE].put(ambient_volume)        
 
 
 if __name__ == "__main__":

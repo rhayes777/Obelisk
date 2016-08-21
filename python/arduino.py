@@ -7,6 +7,8 @@ import util
 
 
 MEASUREMENT_PAUSE = 0.1  # s
+OFF = 0
+ON = 1
 
 # logging.basicConfig(level=logging.DEBUG)
 

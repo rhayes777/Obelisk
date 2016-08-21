@@ -11,33 +11,6 @@ import os
 
 # http://playground.arduino.cc/Interfacing/Python
 
-A_FAR_Master  = "A_FAR_Master.wav"
-A_NEAR_Master = "A_NEAR_Master.wav"
-B_FAR_Master  = "B_FAR_Master.wav"
-B_NEAR_Master = "B_NEAR_Master.wav"
-C_FAR_Master  = "C_FAR_Master.wav"
-C_NEAR_Master = "C_NEAR_Master.wav"
-D_FAR_Master  = "D_FAR_Master.wav"
-D_NEAR_Master = "D_NEAR_Master.wav"
-
-TRACK2_1A = "TRACK2_1A.wav"
-TRACK2_1B = "TRACK2_1B.wav"
-TRACK2_2A = "TRACK2_2A.wav"
-TRACK2_2B = "TRACK2_2B.wav"
-TRACK2_3A = "TRACK2_3A.wav"
-TRACK2_3B = "TRACK2_3B.wav"
-TRACK2_4A = "TRACK2_4A.wav"
-TRACK2_4B = "TRACK2_4B.wav"
-
-TRACK2_1A_2 = "TRACK2_1A_2.wav"
-TRACK2_1B_2 = "TRACK2_1B_2.wav"
-TRACK2_2A_2 = "TRACK2_2A_2.wav"
-TRACK2_2B_2 = "TRACK2_2B_2.wav"
-TRACK2_3A_2 = "TRACK2_3A_2.wav"
-TRACK2_3B_2 = "TRACK2_3B_2.wav"
-TRACK2_4A_2 = "TRACK2_4A_2.wav"
-TRACK2_4B_2 = "TRACK2_4B_2.wav"
-
 TRACK3_drums = "TRACK3_drums.wav"
 TRACK3_bass = "TRACK3_bass.wav"
 TRACK3_guitar_keys = "TRACK3_guitar_keys.wav"
@@ -58,41 +31,33 @@ KOTO_lead = "KOTO_lead.wav"
 KOTO_inst = "KOTO_inst.wav"
 KOTO_drums = "KOTO_drums.wav"
 
-afternoon = [
-    A_FAR_Master,
-    B_FAR_Master,
-    C_FAR_Master,
-    D_FAR_Master
+LONG_AMBIENT_PART1 = "LONG_AMBIENT_PART1.wav"
+LONG_AMBIENT_PART2 = "LONG_AMBIENT_PART2.wav"
+LONG_AMBIENT_PART3 = "LONG_AMBIENT_PART3.wav"
 
-]
-
-evening = [
-    TRACK2_1A,
-    TRACK2_1B,
-    TRACK2_3B,
-    TRACK2_4B
-
-]
 
 track3 = [
     TRACK3_drums,
     TRACK3_bass,
     TRACK3_guitar_keys,
-    TRACK3_noises
+    TRACK3_noises,
+    LONG_AMBIENT_PART1
 ]
 
 koto = [
     KOTO_bass,
     KOTO_lead,
     KOTO_inst,
-    KOTO_drums
+    KOTO_drums,
+    LONG_AMBIENT_PART2
 ]
 
 white = [
     WHITE_atmos,
     WHITE_guitar,
     WHITE_percnsub,
-    WHITE_sitar
+    WHITE_sitar,
+    LONG_AMBIENT_PART3
 ]
 
 klaxon = [
@@ -104,7 +69,7 @@ klaxon = [
 
 
 track_dict = {"morning": white,
-              "afternoon": afternoon,
+              "afternoon": track3,
               "evening": koto,
               "night": track3,
               "koto": koto,
@@ -122,7 +87,7 @@ queues = []
 number_of_ready_loops = 0
 
 CHUNK_SIZE = 512
-VOLUME_DECAY_RATE = 0.04
+FADE_OUT_RATE = 0.04
 
 dir = os.path.dirname(__file__)
 
@@ -131,7 +96,7 @@ def play_track(track_name, number_of_channels):
     audio_samples = track_dict[track_name]
 
     for n in range(0, number_of_channels):
-        print "Playing {}".format(audio_samples[n])
+        logging.info("Playing {}".format(audio_samples[n]))
         loop_wav_on_new_thread(audio_samples[n], number_of_channels)
 
 
@@ -139,11 +104,12 @@ def play_track(track_name, number_of_channels):
 
 class Loop:
     
-    def __init__(self, wav_filename, no_of_loops_required, chunk_size=CHUNK_SIZE, volume=1, number_of_times_to_loop=-1):
+    def __init__(self, wav_filename, no_of_loops_required, chunk_size=CHUNK_SIZE, volume=1, number_of_times_to_loop=-1, fade_out_rate=FADE_OUT_RATE):
         self.number_of_times_to_loop = number_of_times_to_loop
         self.wav_filename = wav_filename
         self.chunk_size=chunk_size
         self.volume = volume
+        self.fade_out_rate = fade_out_rate
         self.no_of_loops_required = no_of_loops_required
         self.queue = Queue()
 
@@ -195,7 +161,7 @@ class Loop:
                 if new_volume >= self.volume:
                     self.volume = new_volume
                 else:
-                    self.volume -= VOLUME_DECAY_RATE
+                    self.volume -= self.fade_out_rate
                     if self.volume < 0:
                         self.volume = 0
                 
@@ -227,17 +193,17 @@ class Loop:
         logging.debug("{}: {}".format(self.wav_filename, message))    
 
 
-def loop_wav_on_new_thread(name, no_of_queues_required=0, no_of_times_to_loop=-1):
-    t = Thread(target=loop_wav, args=(name, no_of_queues_required, no_of_times_to_loop, ))
+def loop_wav_on_new_thread(name, no_of_queues_required=0, no_of_times_to_loop=-1, fade_out_rate=FADE_OUT_RATE):
+    t = Thread(target=loop_wav, args=(name, no_of_queues_required, no_of_times_to_loop, fade_out_rate, ))
     t.start()
     
-def loop_wav(name, no_of_queues_required, no_of_times_to_loop):
-    loop = Loop(name, no_of_queues_required, number_of_times_to_loop=no_of_times_to_loop)
+def loop_wav(name, no_of_queues_required, no_of_times_to_loop, fade_out_rate):
+    loop = Loop(name, no_of_queues_required, number_of_times_to_loop=no_of_times_to_loop, fade_out_rate=fade_out_rate)
     if no_of_queues_required:
-        print "appending queue to queues"
+        logging.debug("appending queue to queues")
         queues.append(loop.queue)
-        print "new size = {}".format(len(queues))
-    print "starting loop..."
+        logging.debug("new size = {}".format(len(queues)))
+    logging.debug("starting loop...")
     loop.start()
     
     

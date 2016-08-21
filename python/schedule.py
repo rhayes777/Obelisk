@@ -1,8 +1,10 @@
 import main
 from play_klaxon import play_klaxon
-import set_light_mode
 from datetime import datetime
+from time import sleep
 import logging
+import arduino
+
 
 MUSIC_OFF_LOW = 0
 MUSIC_OFF_HIGH = 24
@@ -19,8 +21,8 @@ class Action(object):
         self.start_hour = start_hour
         self.end_hour = end_hour
         
-    def is_time_within_range(self, time):
-        return time.hour > self.start_hour and time.hour < self.end_hour
+    def is_time_within_range(self, hour):
+        return hour >= self.start_hour and hour < self.end_hour
         
     def start(self):
         print "Action class is abstract. function 'start' should be overridden"
@@ -34,7 +36,10 @@ class LightsOnAction(Action):
         
     def start(self):
         logging.info("starting LightsOnAction")
-        set_light_mode.set_light_mode(set_light_mode.ON)
+        arduino1, arduino2 = arduino.get_all()
+        sleep(0.1)
+        arduino1.set_light_modes([1, 1])
+        arduino2.set_light_modes([1, 1])
         
         
 class LightsOffAction(Action):
@@ -44,7 +49,10 @@ class LightsOffAction(Action):
         
     def start(self):
         logging.info("starting LightsOffAction")
-        set_light_mode.set_light_mode(set_light_mode.OFF)
+        arduino1, arduino2 = arduino.get_all()
+        sleep(0.1)
+        arduino1.set_light_modes([0, 0])
+        arduino2.set_light_modes([0, 0])
         
 
 class MorningAction(Action):
@@ -55,7 +63,7 @@ class MorningAction(Action):
     def start(self):
         logging.info("starting MorningAction")
         play_klaxon()
-        main.play("morning", default_light_mode=set_light_mode.OFF)
+        main.play("morning", default_light_mode=arduino.OFF)
         
 
 class AfternoonAction(Action):
@@ -66,7 +74,7 @@ class AfternoonAction(Action):
     def start(self):
         logging.info("starting AfternoonAction")
         play_klaxon()
-        main.play("afternoon", default_light_mode=set_light_mode.OFF)
+        main.play("afternoon", default_light_mode=arduino.OFF)
         
         
 class EveningAction(Action):
@@ -95,9 +103,11 @@ actions = [LightsOnAction(), LightsOffAction(), MorningAction(), AfternoonAction
 
 
 def take_action():
+    logging.info('take_action')
     now = datetime.now()
+    hour = now.hour
     for action in actions:
-        if action.is_time_within_range(now):
+        if action.is_time_within_range(hour):
             action.start()
             break
             

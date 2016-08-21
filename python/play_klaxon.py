@@ -7,8 +7,8 @@ from time import sleep
 import time
 from random import randint
 
-
-arduino1, arduino2 = arduino.get_all()
+arduino1 = None
+arduino2 = None
 
 FLASHING_PERIOD = 60
 
@@ -44,6 +44,9 @@ def play_moment(moment):
 
 
 def play_klaxon(klaxon_name=None):
+    global arduino1, arduino2
+    arduino1, arduino2 = arduino.get_all()
+    
     if klaxon_name is None:
         klaxon_name = audio_controller.klaxon[randint(0,3)]
     audio_controller.loop_wav_on_new_thread(klaxon_name, no_of_times_to_loop=1)
