@@ -8,16 +8,43 @@ int echoPins[] = {6,7,8,9};
 int lightPins[] = {10, 11};
 int lightModes[] = {0, 0};
 boolean isLightOnArray[] = {false, false};
-int countArray[] = {0, 0};
+
+int lightPattern0[] = {0, 0, 0, 0, 0, 0, 0, 0};
+int lightPattern1[] = {1, 1, 1, 1, 1, 1, 1, 1};
+int lightPattern2[] = {0, 1, 1, 1, 1, 1, 1, 1};
+int lightPattern3[] = {1, 1, 1, 0, 1, 1, 0, 0};
+int lightPattern4[] = {1, 0, 1, 0, 0, 1, 0, 0};
+int lightPattern5[] = {0, 1, 0, 1, 1, 0, 1, 1};
+int lightPattern6[] = {1, 1, 1, 1, 0, 0, 0, 0};
+int lightPattern7[] = {1, 1, 0, 1, 1, 0, 1, 0};
+int lightPattern8[] = {1, 1, 0, 0, 1, 1, 0, 0};
+int lightPattern9[] = {1, 0, 1, 0, 1, 0, 1, 0};
+
+int* lightPatterns[10];
 
 int numberOfSensors;
+int lightPatternLength;
+int count;
 
 void setup() {
-    Serial.begin(9600);
-    wdt_enable(WDTO_1S);
+ Serial.begin(9600);
+ wdt_enable(WDTO_1S);
  
-    numberOfSensors = sizeof(trigPins)/sizeof(int);
+ numberOfSensors = sizeof(trigPins)/sizeof(int);
+ lightPatternLength = sizeof(*lightPatterns[0])/sizeof(int);
+ count = 0;
 
+ lightPatterns[0] = lightPattern0;
+ lightPatterns[1] = lightPattern1;
+ lightPatterns[2] = lightPattern2;
+ lightPatterns[3] = lightPattern3;
+ lightPatterns[4] = lightPattern4;
+ lightPatterns[5] = lightPattern5;
+ lightPatterns[6] = lightPattern6;
+ lightPatterns[7] = lightPattern7;
+ lightPatterns[8] = lightPattern8;
+ lightPatterns[9] = lightPattern9;
+ 
  for (int n; n < numberOfSensors; n++) {
     pinMode(trigPins[n], OUTPUT);
     pinMode(echoPins[n], INPUT);
@@ -29,35 +56,25 @@ void setup() {
 
 void loop() {
   wdt_reset();
+
+  count++;
+  if (count > lightPatternLength) {
+    count = 0;
+  }
   
   for (int n; n < 2; n++) {
    
-    countArray[n] = countArray[n] + 1;
     int pin = lightPins[n];
     int lightMode = lightModes[n];
+    int* lightPattern = lightPatterns[lightMode];
 
-    if (lightMode == LIGHT_MODE_OFF) {
-      digitalWrite(pin,HIGH);
+    if (*(lightPattern + count) == 1) {
+      digitalWrite(pin, HIGH);
     }
-    if (lightMode == LIGHT_MODE_ON) {
-      digitalWrite(pin,LOW);
+    else {
+      digitalWrite(pin, LOW);
     }
-    
-    int limit = lightMode;
-    if (lightMode != LIGHT_MODE_OFF) { 
-      if (countArray[n] > limit && !isLightOnArray[n]) {
-        digitalWrite(pin,LOW);
-        countArray[n] = 0;
-        isLightOnArray[n] = true;
-      }
-    }
-    if (lightMode != LIGHT_MODE_ON) {
-      if (countArray[n] > limit && isLightOnArray[n]) {
-        digitalWrite(pin,HIGH);
-        countArray[n] = 0;
-        isLightOnArray[n] = false;
-      }
-    }                                      
+                                       
   }
   wdt_reset();
   delay(50);
