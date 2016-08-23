@@ -69,10 +69,10 @@ void loop() {
     int* lightPattern = lightPatterns[lightMode];
 
     if (*(lightPattern + count) == 1) {
-      digitalWrite(pin, HIGH);
+      digitalWrite(pin, LOW);
     }
     else {
-      digitalWrite(pin, LOW);
+      digitalWrite(pin, HIGH);
     }
                                        
   }
