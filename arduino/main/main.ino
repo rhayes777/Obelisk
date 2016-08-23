@@ -58,7 +58,7 @@ void loop() {
   wdt_reset();
 
   count++;
-  if (count > lightPatternLength) {
+  if (count > lightPatternLength - 1) {
     count = 0;
   }
   
@@ -74,7 +74,7 @@ void loop() {
     else {
       digitalWrite(pin, HIGH);
     }
-                                       
+                                      
   }
   wdt_reset();
   delay(50);
